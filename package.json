@@ -66,13 +66,26 @@
           "command": "sideline.openPanel",
           "when": "view == sidelineTracked",
           "group": "navigation"
+        },
+        {
+          "command": "sideline.openPanel",
+          "when": "view == sidelineTrackedSecondary",
+          "group": "navigation"
         }
       ]
     },
     "views": {
-      "explorer": [
+      "sideline": [
         {
           "id": "sidelineTracked",
+          "name": "Sideline",
+          "type": "webview",
+          "when": "true"
+        }
+      ],
+      "explorer": [
+        {
+          "id": "sidelineTrackedSecondary",
           "name": "Sideline",
           "type": "webview",
           "when": "true"

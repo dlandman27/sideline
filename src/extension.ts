@@ -15,8 +15,9 @@ export function activate(context: vscode.ExtensionContext) {
     // Create the tracked games provider
     const trackedGamesProvider = new TrackedGamesProvider(gameTracker, context.extensionUri);
     
-    // Register the webview view provider
+    // Register the webview view providers (both locations)
     vscode.window.registerWebviewViewProvider('sidelineTracked', trackedGamesProvider);
+    vscode.window.registerWebviewViewProvider('sidelineTrackedSecondary', trackedGamesProvider);
 
     // Register the command to open the panel
     const openPanelCommand = vscode.commands.registerCommand('sideline.openPanel', () => {

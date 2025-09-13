@@ -4,6 +4,7 @@ exports.TrackedGameItem = exports.TrackedGamesWebviewItem = exports.NoGamesItem 
 const vscode = require("vscode");
 class TrackedGamesProvider {
     constructor(gameTracker, extensionUri) {
+        this._views = [];
         this.gameTracker = gameTracker;
         this.extensionUri = extensionUri;
         // Listen for game updates
@@ -13,12 +14,17 @@ class TrackedGamesProvider {
         });
     }
     refresh() {
-        if (this._view) {
-            this.updateWebview();
-        }
+        this._views.forEach(view => {
+            if (view && view.webview) {
+                this.updateWebview(view);
+            }
+        });
     }
     resolveWebviewView(webviewView, context, _token) {
-        this._view = webviewView;
+        // Add this view to our array of views
+        if (!this._views.includes(webviewView)) {
+            this._views.push(webviewView);
+        }
         webviewView.webview.options = {
             enableScripts: true,
             localResourceRoots: [this.extensionUri]
@@ -32,7 +38,7 @@ class TrackedGamesProvider {
                     this.refresh();
                     return;
                 case 'getTrackedGames':
-                    this.updateWebview();
+                    this.updateWebview(webviewView);
                     return;
                 case 'openMainComponent':
                     vscode.commands.executeCommand('sideline.openPanel');
@@ -43,14 +49,15 @@ class TrackedGamesProvider {
             }
         }, undefined, []);
         // Initial load
-        this.updateWebview();
+        this.updateWebview(webviewView);
         // Set up automatic refresh every 30 seconds
         this.startAutoRefresh();
     }
-    updateWebview() {
-        if (this._view) {
+    updateWebview(view) {
+        const targetView = view || this._views[0];
+        if (targetView) {
             const trackedGames = this.gameTracker.getTrackedGames();
-            this._view.webview.postMessage({
+            targetView.webview.postMessage({
                 command: 'updateTrackedGames',
                 data: trackedGames
             });
@@ -63,10 +70,10 @@ class TrackedGamesProvider {
         const intervalMs = refreshInterval * 1000; // Convert to milliseconds
         // Refresh at the configured interval
         setInterval(() => {
-            if (this._view) {
+            if (this._views.length > 0) {
                 // Trigger a refresh of the game data
                 this.gameTracker.refreshAllGames();
-                this.updateWebview();
+                this.refresh();
             }
         }, intervalMs);
     }

@@ -5,7 +5,7 @@ import { LiveGameTracker, TrackedGame } from './liveGameTracker';
 export class TrackedGamesProvider implements vscode.WebviewViewProvider {
     private gameTracker: LiveGameTracker;
     private extensionUri: vscode.Uri;
-    private _view?: vscode.WebviewView;
+    private _views: vscode.WebviewView[] = [];
 
     constructor(gameTracker: LiveGameTracker, extensionUri: vscode.Uri) {
         this.gameTracker = gameTracker;
@@ -19,9 +19,11 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
     }
 
     refresh(): void {
-        if (this._view) {
-            this.updateWebview();
-        }
+        this._views.forEach(view => {
+            if (view && view.webview) {
+                this.updateWebview(view);
+            }
+        });
     }
 
     public resolveWebviewView(
@@ -29,7 +31,10 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
         context: vscode.WebviewViewResolveContext,
         _token: vscode.CancellationToken,
     ) {
-        this._view = webviewView;
+        // Add this view to our array of views
+        if (!this._views.includes(webviewView)) {
+            this._views.push(webviewView);
+        }
 
         webviewView.webview.options = {
             enableScripts: true,
@@ -47,7 +52,7 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
                         this.refresh();
                         return;
                     case 'getTrackedGames':
-                        this.updateWebview();
+                        this.updateWebview(webviewView);
                         return;
                     case 'openMainComponent':
                         vscode.commands.executeCommand('sideline.openPanel');
@@ -62,16 +67,17 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
         );
 
         // Initial load
-        this.updateWebview();
+        this.updateWebview(webviewView);
         
         // Set up automatic refresh every 30 seconds
         this.startAutoRefresh();
     }
 
-    private updateWebview(): void {
-        if (this._view) {
+    private updateWebview(view?: vscode.WebviewView): void {
+        const targetView = view || this._views[0];
+        if (targetView) {
             const trackedGames = this.gameTracker.getTrackedGames();
-            this._view.webview.postMessage({
+            targetView.webview.postMessage({
                 command: 'updateTrackedGames',
                 data: trackedGames
             });
@@ -86,10 +92,10 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
         
         // Refresh at the configured interval
         setInterval(() => {
-            if (this._view) {
+            if (this._views.length > 0) {
                 // Trigger a refresh of the game data
                 this.gameTracker.refreshAllGames();
-                this.updateWebview();
+                this.refresh();
             }
         }, intervalMs);
     }
