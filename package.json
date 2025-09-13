@@ -3,7 +3,7 @@
   "displayName": "Sideline",
   "description": "Keep track of your favorite sports teams without leaving VS Code",
   "version": "0.0.1",
-  "icon": "src/SIDELINE.png",
+  "icon": "SIDELINE.png",
   "engines": {
     "vscode": "^1.74.0"
   },

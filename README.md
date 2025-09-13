@@ -1,8 +1,5 @@
 # Sideline - VS Code Sports Extension
 
-<div align="center">
-  <img src="src/SIDELINE.png" alt="Sideline Logo" width="800" height="400">
-</div>
 
 <div align="center">
   <h1>🏈 The Ultimate Sports Companion for Developers 🏈</h1>
@@ -264,7 +261,7 @@ git push origin feature/amazing-feature
 
 ## 📄 License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License**.
 
 ---
 
