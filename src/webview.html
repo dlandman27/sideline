@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sideline</title>
+    <style>
+        /* Using system fonts that are similar to Anton */
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 14px;
+            color: var(--vscode-foreground);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            font-family: 'Impact', 'Arial Black', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        .logo {
+            /* max-width: 200px; */
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .header p {
+            color: #a0a0a0;
+            margin: 8px 0 0 0;
+            font-size: 16px;
+        }
+        
+        .sport-section {
+            margin-bottom: 25px;
+        }
+        
+        .sport-header {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            padding: 16px 20px;
+            font-family: 'Impact', 'Arial Black', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 500;
+            font-size: 18px;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 600px) {
+            .sport-header {
+                padding: 12px 16px;
+                font-size: 16px;
+            }
+        }
+        
+        .league-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .game {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s ease;
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .game-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .tail-btn {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+            border: 1px solid #ffa500;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+        }
+        
+        .tail-btn.tailed {
+            background: #ffa500;
+            color: white;
+        }
+        
+        .see-more-btn {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+            border: 1px solid #ffa500;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+        }
+        
+        .tail-btn:hover {
+            background: #ffa500;
+            color: white;
+            border: 1px solid #ffa500;
+            transform: scale(1.05);
+        }
+        
+        .see-more-btn:hover {
+            background: #ffa500;
+            color: white;
+            border: 1px solid #ffa500;
+            transform: scale(1.05);
+        }
+        
+        .game:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .game:last-child {
+            border-bottom: none;
+        }
+        
+        
+        .teams {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+        }
+        
+        .team {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex: 0 0 auto;
+        }
+        
+        .team-logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 4px;
+        }
+        
+        .team-logo-fallback {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #a0a0a0;
+            padding: 4px;
+        }
+        
+        .team-name {
+            font-weight: 500;
+            font-size: 12px;
+            color: #ffffff;
+            text-align: center;
+            font-family: 'Impact', 'Arial Black', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            letter-spacing: 0.3px;
+        }
+        
+        .game-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            margin: 0 8px;
+        }
+        
+        .game-score {
+            font-size: 24px;
+            font-weight: 500;
+            color: #ffffff;
+            text-align: center;
+        }
+        
+        .game-time {
+            font-size: 10px;
+            color: #a0a0a0;
+            text-align: center;
+        }
+        
+        .game-status-center {
+            font-size: 11px;
+            color: #a0a0a0;
+            text-align: center;
+        }
+        
+        .status {
+            font-size: 12px;
+            color: #a0a0a0;
+            text-align: right;
+            min-width: 80px;
+        }
+        
+        .live-indicator {
+            background: linear-gradient(45deg, #ff4444, #ff6666);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .game.live {
+            border-left: 3px solid #ff4444;
+            background: rgba(255, 68, 68, 0.05);
+        }
+        
+        .game.final {
+            opacity: 0.85;
+        }
+        
+        .refresh-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+            border: 1px solid #ffa500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 12px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(255, 165, 0, 0.3);
+            z-index: 1000;
+        }
+        
+        .refresh-btn:hover {
+            background: #ffa500;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 165, 0, 0.4);
+        }
+        
+        .refresh-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .refresh-btn.refreshing {
+            background: rgba(255, 165, 0, 0.4);
+            animation: pulse 1s infinite;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #a0a0a0;
+            padding: 40px 20px;
+            font-size: 16px;
+        }
+        
+        .vs {
+            font-weight: 600;
+            color: #a0a0a0;
+            font-size: 12px;
+            margin: 0 8px;
+        }
+        
+        .debug {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 11px;
+            max-height: 200px;
+            overflow-y: auto;
+            border-radius: 8px;
+            color: #a0a0a0;
+        }
+        
+        .no-games {
+            text-align: center;
+            color: #a0a0a0;
+            padding: 20px;
+            font-style: italic;
+        }
+        
+        .click-hint {
+            font-size: 11px;
+            color: #a0a0a0;
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="SIDELINE.png" alt="Sideline" class="logo">
+    </div>
+    
+    <button class="refresh-btn" onclick="refreshData()">Refresh Scores</button>
+    
+    <div id="content">
+        <div class="loading">Loading sports data...</div>
+    </div>
+    
+    <div id="debug" class="debug" style="display: none;">
+        <strong>Debug Info:</strong><br>
+        <div id="debug-content"></div>
+    </div>
+    
+    <script>
+        const vscode = acquireVsCodeApi();
+        
+        function refreshData() {
+            const refreshBtn = document.querySelector('.refresh-btn');
+            
+            // Show loading state
+            refreshBtn.disabled = true;
+            refreshBtn.classList.add('refreshing');
+            refreshBtn.textContent = 'Refreshing...';
+            
+            vscode.postMessage({
+                command: 'refresh'
+            });
+        }
+        
+        function resetRefreshButton() {
+            const refreshBtn = document.querySelector('.refresh-btn');
+            refreshBtn.disabled = false;
+            refreshBtn.classList.remove('refreshing');
+            refreshBtn.textContent = 'Refresh Scores';
+        }
+        
+        function selectTeam(team) {
+            vscode.postMessage({
+                command: 'selectTeam',
+                team: team
+            });
+        }
+        
+        function openGame(gameUrl) {
+            vscode.postMessage({
+                command: 'openGame',
+                gameUrl: gameUrl
+            });
+        }
+        
+        function tailGame(gameData) {
+            vscode.postMessage({
+                command: 'tailGame',
+                gameData: gameData
+            });
+        }
+        
+        function generateGameUrl(homeTeam, awayTeam, sport) {
+            const baseUrls = {
+                'nfl': 'https://www.espn.com/nfl/game/_/gameId/',
+                'nba': 'https://www.espn.com/nba/game/_/gameId/',
+                'premierLeague': 'https://www.espn.com/soccer/match/_/gameId/',
+                'nhl': 'https://www.espn.com/nhl/game/_/gameId/',
+                'mlb': 'https://www.espn.com/mlb/game/_/gameId/'
+            };
+            
+            // For now, we'll use a generic ESPN search URL since we don't have game IDs
+            const searchQuery = encodeURIComponent(`${awayTeam} vs ${homeTeam}`);
+            return `https://www.espn.com/search/results?q=${searchQuery}`;
+        }
+        
+        function formatGameTime(dateString, timeString) {
+            if (!dateString) return 'TBD';
+            
+            try {
+                const gameDate = new Date(dateString);
+                const now = new Date();
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const gameDay = new Date(gameDate.getFullYear(), gameDate.getMonth(), gameDate.getDate());
+                
+                let dayText = '';
+                if (gameDay.getTime() === today.getTime()) {
+                    dayText = 'Today';
+                } else if (gameDay.getTime() === tomorrow.getTime()) {
+                    dayText = 'Tomorrow';
+                } else {
+                    dayText = gameDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                }
+                
+                const timeText = gameDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+                return `${dayText} ${timeText}`;
+            } catch (error) {
+                return timeString || 'TBD';
+            }
+        }
+        
+        function renderData(data) {
+            const content = document.getElementById('content');
+            const debugDiv = document.getElementById('debug');
+            const debugContent = document.getElementById('debug-content');
+            
+            // Show debug info
+            debugDiv.style.display = 'block';
+            debugContent.innerHTML = JSON.stringify(data, null, 2);
+            
+            if (!data) {
+                content.innerHTML = '<div class="loading">No data available</div>';
+                return;
+            }
+            
+            let html = '';
+            
+            // NFL Games
+            if (data.nfl && data.nfl.games && data.nfl.games.length > 0) {
+                html += `
+                    <div class="sport-section">
+                        <div class="sport-header">
+                            <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nfl.png" alt="NFL" class="league-logo" onerror="this.style.display='none'">
+                            🏈 NFL
+                        </div>
+                        ${data.nfl.games.map(game => {
+                            const gameUrl = generateGameUrl(game.home.name, game.away.name, 'nfl');
+                            const gameData = { ...game, sport: 'nfl' };
+                            const awayColor = game.away.colors?.primary || '#4a5568';
+                            const homeColor = game.home.colors?.primary || '#4a5568';
+                            const gradientStyle = `background: linear-gradient(90deg, ${awayColor}40 0%, rgba(255,255,255,0.05) 50%, ${homeColor}40 100%);`;
+                            return `
+                            <div class="game ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'live' : game.status === 'Final' || game.status === 'STATUS_FINAL' ? 'final' : ''}" style="${gradientStyle}">
+                                <div class="teams">
+                                    <div class="team">
+                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
+                                        <div class="team-name">${game.away.name}</div>
+                                    </div>
+                                    <div class="game-center">
+                                        <div class="game-score">${game.away.score} - ${game.home.score}</div>
+                                        <div class="game-time">${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? '<span class="live-indicator">Live</span> ' : ''}${game.status === 'STATUS_SCHEDULED' ? formatGameTime(game.date, game.time) : (game.quarter || game.minute || 'TBD')}</div>
+                                        <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? 'Scheduled' : game.status === 'STATUS_FINAL' ? 'Final' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : ''}</div>
+                                    </div>
+                                    <div class="team">
+                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
+                                        <div class="team-name">${game.home.name}</div>
+                                    </div>
+                                </div>
+                                <div class="game-buttons">
+                                    <button class="see-more-btn" onclick="openGame('${gameUrl}')" title="View More">View More</button>
+                                    <button class="tail-btn ${game.isTailing ? 'tailed' : ''}" onclick="tailGame(${JSON.stringify(gameData).replace(/"/g, '&quot;')})" title="${game.isTailing ? 'Stop Tailing' : 'Tail Game'}">${game.isTailing ? 'Tailing' : 'Tail Game'}</button>
+                                </div>
+                            </div>
+                        `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+            
+            // NBA Games
+            if (data.nba && data.nba.games && data.nba.games.length > 0) {
+                html += `
+                    <div class="sport-section">
+                        <div class="sport-header">
+                            <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nba.png" alt="NBA" class="league-logo" onerror="this.style.display='none'">
+                            🏀 NBA
+                        </div>
+                        ${data.nba.games.map(game => {
+                            const gameUrl = generateGameUrl(game.home.name, game.away.name, 'nba');
+                            const gameData = { ...game, sport: 'nba' };
+                            const awayColor = game.away.colors?.primary || '#4a5568';
+                            const homeColor = game.home.colors?.primary || '#4a5568';
+                            const gradientStyle = `background: linear-gradient(90deg, ${awayColor}40 0%, rgba(255,255,255,0.05) 50%, ${homeColor}40 100%);`;
+                            return `
+                            <div class="game ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'live' : game.status === 'Final' || game.status === 'STATUS_FINAL' ? 'final' : ''}" style="${gradientStyle}">
+                                <div class="teams">
+                                    <div class="team">
+                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
+                                        <div class="team-name">${game.away.name}</div>
+                                    </div>
+                                    <div class="game-center">
+                                        <div class="game-score">${game.away.score} - ${game.home.score}</div>
+                                        <div class="game-time">${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? '<span class="live-indicator">Live</span> ' : ''}${game.status === 'STATUS_SCHEDULED' ? formatGameTime(game.date, game.time) : (game.quarter || game.minute || 'TBD')}</div>
+                                        <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? 'Scheduled' : game.status === 'STATUS_FINAL' ? 'Final' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : ''}</div>
+                                    </div>
+                                    <div class="team">
+                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
+                                        <div class="team-name">${game.home.name}</div>
+                                    </div>
+                                </div>
+                                <div class="game-buttons">
+                                    <button class="see-more-btn" onclick="openGame('${gameUrl}')" title="View More">View More</button>
+                                    <button class="tail-btn ${game.isTailing ? 'tailed' : ''}" onclick="tailGame(${JSON.stringify(gameData).replace(/"/g, '&quot;')})" title="${game.isTailing ? 'Stop Tailing' : 'Tail Game'}">${game.isTailing ? 'Tailing' : 'Tail Game'}</button>
+                                </div>
+                            </div>
+                        `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+            
+            // Premier League Games
+            if (data.premierLeague && data.premierLeague.games && data.premierLeague.games.length > 0) {
+                html += `
+                    <div class="sport-section">
+                        <div class="sport-header">
+                            <img src="https://a.espncdn.com/i/teamlogos/leagues/500/eng.1.png" alt="Premier League" class="league-logo" onerror="this.style.display='none'">
+                            ⚽ Premier League
+                        </div>
+                        ${data.premierLeague.games.map(game => {
+                            const gameUrl = generateGameUrl(game.home.name, game.away.name, 'premierLeague');
+                            const gameData = { ...game, sport: 'premierLeague' };
+                            const awayColor = game.away.colors?.primary || '#4a5568';
+                            const homeColor = game.home.colors?.primary || '#4a5568';
+                            const gradientStyle = `background: linear-gradient(90deg, ${awayColor}40 0%, rgba(255,255,255,0.05) 50%, ${homeColor}40 100%);`;
+                            return `
+                            <div class="game ${game.status === 'Live' ? 'live' : game.status === 'Full Time' ? 'final' : ''}" style="${gradientStyle}">
+                                <div class="teams">
+                                    <div class="team">
+                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
+                                        <div class="team-name">${game.away.name}</div>
+                                    </div>
+                                    <div class="game-center">
+                                        <div class="game-score">${game.away.score} - ${game.home.score}</div>
+                                        <div class="game-time">${game.status === 'STATUS_SCHEDULED' ? formatGameTime(game.date, game.time) : (game.minute || 'TBD')}</div>
+                                        <div class="game-status-center">${game.status === 'STATUS_FULL_TIME' ? 'Full Time' : game.status === 'STATUS_SECOND_HALF' ? '2nd Half' : game.status === 'STATUS_FIRST_HALF' ? '1st Half' : game.status === 'STATUS_SCHEDULED' ? '' : game.status} ${game.minute ? ` - ${game.minute}` : ''}</div>
+                                    </div>
+                                    <div class="team">
+                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
+                                        <div class="team-name">${game.home.name}</div>
+                                    </div>
+                                </div>
+                                <div class="game-buttons">
+                                    <button class="see-more-btn" onclick="openGame('${gameUrl}')" title="View More">View More</button>
+                                    <button class="tail-btn ${game.isTailing ? 'tailed' : ''}" onclick="tailGame(${JSON.stringify(gameData).replace(/"/g, '&quot;')})" title="${game.isTailing ? 'Stop Tailing' : 'Tail Game'}">${game.isTailing ? 'Tailing' : 'Tail Game'}</button>
+                                </div>
+                            </div>
+                        `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+            
+            // NHL Games
+            if (data.nhl && data.nhl.games && data.nhl.games.length > 0) {
+                html += `
+                    <div class="sport-section">
+                        <div class="sport-header">
+                            <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nhl.png" alt="NHL" class="league-logo" onerror="this.style.display='none'">
+                            🏒 NHL
+                        </div>
+                        ${data.nhl.games.map(game => {
+                            const gameUrl = generateGameUrl(game.home.name, game.away.name, 'nhl');
+                            const gameData = { ...game, sport: 'nhl' };
+                            const awayColor = game.away.colors?.primary || '#4a5568';
+                            const homeColor = game.home.colors?.primary || '#4a5568';
+                            const gradientStyle = `background: linear-gradient(90deg, ${awayColor}40 0%, rgba(255,255,255,0.05) 50%, ${homeColor}40 100%);`;
+                            return `
+                            <div class="game ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'live' : game.status === 'Final' || game.status === 'STATUS_FINAL' ? 'final' : ''}" style="${gradientStyle}">
+                                <div class="teams">
+                                    <div class="team">
+                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
+                                        <div class="team-name">${game.away.name}</div>
+                                    </div>
+                                    <div class="game-center">
+                                        <div class="game-score">${game.away.score} - ${game.home.score}</div>
+                                        <div class="game-time">${game.status === 'STATUS_SCHEDULED' ? (game.time ? new Date(game.time).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }) : 'TBD') : (game.time ? new Date(game.time).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) : (game.quarter || game.minute || 'TBD'))}</div>
+                                        <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? 'Scheduled' : game.status === 'STATUS_FINAL' ? 'Final' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : ''}</div>
+                                    </div>
+                                    <div class="team">
+                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
+                                        <div class="team-name">${game.home.name}</div>
+                                    </div>
+                                </div>
+                                <div class="game-buttons">
+                                    <button class="see-more-btn" onclick="openGame('${gameUrl}')" title="View More">View More</button>
+                                    <button class="tail-btn ${game.isTailing ? 'tailed' : ''}" onclick="tailGame(${JSON.stringify(gameData).replace(/"/g, '&quot;')})" title="${game.isTailing ? 'Stop Tailing' : 'Tail Game'}">${game.isTailing ? 'Tailing' : 'Tail Game'}</button>
+                                </div>
+                            </div>
+                        `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+            
+            // MLB Games
+            if (data.mlb && data.mlb.games && data.mlb.games.length > 0) {
+                html += `
+                    <div class="sport-section">
+                        <div class="sport-header">
+                            <img src="https://a.espncdn.com/i/teamlogos/leagues/500/mlb.png" alt="MLB" class="league-logo" onerror="this.style.display='none'">
+                            ⚾ MLB
+                        </div>
+                        ${data.mlb.games.map(game => {
+                            const gameUrl = generateGameUrl(game.home.name, game.away.name, 'mlb');
+                            const gameData = { ...game, sport: 'mlb' };
+                            const awayColor = game.away.colors?.primary || '#4a5568';
+                            const homeColor = game.home.colors?.primary || '#4a5568';
+                            const gradientStyle = `background: linear-gradient(90deg, ${awayColor}40 0%, rgba(255,255,255,0.05) 50%, ${homeColor}40 100%);`;
+                            return `
+                            <div class="game ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'live' : game.status === 'Final' || game.status === 'STATUS_FINAL' ? 'final' : ''}" style="${gradientStyle}">
+                                <div class="teams">
+                                    <div class="team">
+                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
+                                        <div class="team-name">${game.away.name}</div>
+                                    </div>
+                                    <div class="game-center">
+                                        <div class="game-score">${game.away.score} - ${game.home.score}</div>
+                                        <div class="game-time">${game.status === 'STATUS_SCHEDULED' ? formatGameTime(game.date, game.time) : (game.quarter || game.minute || 'TBD')}</div>
+                                        <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? 'Scheduled' : game.status === 'STATUS_FINAL' ? 'Final' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : ''}</div>
+                                    </div>
+                                    <div class="team">
+                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
+                                        <div class="team-name">${game.home.name}</div>
+                                    </div>
+                                </div>
+                                <div class="game-buttons">
+                                    <button class="see-more-btn" onclick="openGame('${gameUrl}')" title="View More">View More</button>
+                                    <button class="tail-btn ${game.isTailing ? 'tailed' : ''}" onclick="tailGame(${JSON.stringify(gameData).replace(/"/g, '&quot;')})" title="${game.isTailing ? 'Stop Tailing' : 'Tail Game'}">${game.isTailing ? 'Tailing' : 'Tail Game'}</button>
+                                </div>
+                            </div>
+                        `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+            
+            if (html === '') {
+                html = '<div class="no-games">No games scheduled for today</div>';
+            }
+            
+            content.innerHTML = html;
+        }
+        
+        // Listen for messages from the extension
+        window.addEventListener('message', event => {
+            const message = event.data;
+            switch (message.command) {
+                case 'updateData':
+                    renderData(message.data);
+                    resetRefreshButton(); // Reset button when data is updated
+                    break;
+            }
+        });
+        
+        // Initial data load
+        refreshData();
+    </script>
+</body>
+</html>

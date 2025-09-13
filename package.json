@@ -1,0 +1,127 @@
+{
+  "name": "sideline",
+  "displayName": "Sideline",
+  "description": "Keep track of your favorite sports teams without leaving VS Code",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "configuration": {
+    "title": "Sideline",
+    "properties": {
+      "sideline.refreshInterval": {
+        "type": "number",
+        "default": 30,
+        "minimum": 10,
+        "maximum": 300,
+        "description": "How often to refresh tracked games (in seconds). Minimum 10 seconds, maximum 5 minutes."
+      }
+    }
+  },
+  "activationEvents": [
+    "onCommand:sideline.openPanel",
+    "onView:sideline",
+    "onView:sidelineTracked"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "sideline.openPanel",
+        "title": "Open Sideline",
+        "category": "Sideline"
+      },
+      {
+        "command": "sideline.refresh",
+        "title": "Refresh",
+        "category": "Sideline"
+      },
+      {
+        "command": "sideline.tailGame",
+        "title": "Tail Game",
+        "category": "Sideline"
+      },
+      {
+        "command": "sideline.showTrackedGames",
+        "title": "Show Tracked Games",
+        "category": "Sideline"
+      },
+      {
+        "command": "sideline.stopTracking",
+        "title": "Stop Tracking",
+        "category": "Sideline"
+      },
+      {
+        "command": "sideline.openTrackedGamesPanel",
+        "title": "Open Tracked Games Panel",
+        "category": "Sideline"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "sideline.openPanel",
+          "when": "view == sideline",
+          "group": "navigation"
+        },
+        {
+          "command": "sideline.refresh",
+          "when": "view == sideline",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "sideline.tailGame",
+          "when": "view == sideline",
+          "group": "inline"
+        }
+      ]
+    },
+    "views": {
+      "sideline": [
+        {
+          "id": "sideline",
+          "name": "Sideline",
+          "when": "true"
+        },
+        {
+          "id": "sidelineTracked",
+          "name": "Sideline",
+          "type": "webview",
+          "when": "true"
+        }
+      ],
+      "explorer": [
+        {
+          "id": "sidelineTrackedSecondary",
+          "name": "Sideline",
+          "type": "webview",
+          "when": "true"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "sideline",
+          "title": "Sideline",
+          "icon": "$(sports-soccer)"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
+  }
+}

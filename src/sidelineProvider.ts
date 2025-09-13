@@ -1,0 +1,165 @@
+import * as vscode from 'vscode';
+import * as path from 'path';
+import { SportsApiService, SportsData } from './sportsApi';
+import { LiveGameTracker } from './liveGameTracker';
+
+export class SidelineProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
+    private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | null | void> = new vscode.EventEmitter<vscode.TreeItem | undefined | null | void>();
+    readonly onDidChangeTreeData: vscode.Event<vscode.TreeItem | undefined | null | void> = this._onDidChangeTreeData.event;
+    
+    private panel: vscode.WebviewPanel | undefined;
+    private extensionUri: vscode.Uri;
+    private sportsApi: SportsApiService;
+    private gameTracker: LiveGameTracker;
+
+    constructor(extensionUri: vscode.Uri, gameTracker: LiveGameTracker) {
+        this.extensionUri = extensionUri;
+        this.sportsApi = new SportsApiService();
+        this.gameTracker = gameTracker;
+    }
+
+    refresh(): void {
+        this._onDidChangeTreeData.fire();
+    }
+
+    getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
+        return element;
+    }
+
+    getChildren(element?: vscode.TreeItem): Thenable<vscode.TreeItem[]> {
+        if (!element) {
+            return Promise.resolve([
+                new vscode.TreeItem('🏈 NFL', vscode.TreeItemCollapsibleState.None),
+                new vscode.TreeItem('🏀 NBA', vscode.TreeItemCollapsibleState.None),
+                new vscode.TreeItem('⚽ Premier League', vscode.TreeItemCollapsibleState.None),
+                new vscode.TreeItem('🏒 NHL', vscode.TreeItemCollapsibleState.None),
+                new vscode.TreeItem('⚾ MLB', vscode.TreeItemCollapsibleState.None)
+            ]);
+        }
+        return Promise.resolve([]);
+    }
+
+    openPanel(): void {
+        if (this.panel) {
+            this.panel.reveal(vscode.ViewColumn.One);
+        } else {
+            this.panel = vscode.window.createWebviewPanel(
+                'sideline',
+                'Sideline - Sports Stats',
+                vscode.ViewColumn.One,
+                {
+                    enableScripts: true,
+                    localResourceRoots: [this.extensionUri],
+                    enableCommandUris: true
+                }
+            );
+
+            this.panel.webview.html = this.getWebviewContent();
+
+            this.panel.onDidDispose(() => {
+                this.panel = undefined;
+            });
+
+            // Handle messages from the webview
+            this.panel.webview.onDidReceiveMessage(
+                message => {
+                    switch (message.command) {
+                        case 'refresh':
+                            this.refreshData();
+                            return;
+                        case 'selectTeam':
+                            this.selectTeam(message.team);
+                            return;
+                        case 'openGame':
+                            this.openGameInBrowser(message.gameUrl);
+                            return;
+                        case 'tailGame':
+                            this.tailGame(message.gameData);
+                            return;
+                    }
+                },
+                undefined,
+                []
+            );
+        }
+    }
+
+    private async refreshData(): Promise<void> {
+        if (this.panel) {
+            // Fetch fresh data and update the webview
+            const data = await this.fetchSportsData();
+            
+            // Add tailing information to each game
+            const trackedGames = this.gameTracker.getTrackedGames();
+            const trackedGameIds = new Set(trackedGames.map(tg => tg.id));
+            
+            // Add isTailing property to each game
+            if (data.nfl?.games) {
+                data.nfl.games.forEach(game => {
+                    const gameId = `${game.away.name}-${game.home.name}-${game.date}`;
+                    (game as any).isTailing = trackedGameIds.has(gameId);
+                });
+            }
+            if (data.nba?.games) {
+                data.nba.games.forEach(game => {
+                    const gameId = `${game.away.name}-${game.home.name}-${game.date}`;
+                    (game as any).isTailing = trackedGameIds.has(gameId);
+                });
+            }
+            if (data.premierLeague?.games) {
+                data.premierLeague.games.forEach(game => {
+                    const gameId = `${game.away.name}-${game.home.name}-${game.date}`;
+                    (game as any).isTailing = trackedGameIds.has(gameId);
+                });
+            }
+            if (data.nhl?.games) {
+                data.nhl.games.forEach(game => {
+                    const gameId = `${game.away.name}-${game.home.name}-${game.date}`;
+                    (game as any).isTailing = trackedGameIds.has(gameId);
+                });
+            }
+            if (data.mlb?.games) {
+                data.mlb.games.forEach(game => {
+                    const gameId = `${game.away.name}-${game.home.name}-${game.date}`;
+                    (game as any).isTailing = trackedGameIds.has(gameId);
+                });
+            }
+            
+            console.log('Fetched data:', JSON.stringify(data, null, 2)); // Debug log
+            this.panel.webview.postMessage({
+                command: 'updateData',
+                data: data
+            });
+        }
+    }
+
+    private async selectTeam(team: string): Promise<void> {
+        vscode.window.showInformationMessage(`Selected team: ${team}`);
+        // Here you would typically save the user's team preference
+    }
+
+    private async openGameInBrowser(gameUrl: string): Promise<void> {
+        vscode.env.openExternal(vscode.Uri.parse(gameUrl));
+    }
+
+    private async tailGame(gameData: any): Promise<void> {
+        vscode.commands.executeCommand('sideline.tailGame', gameData);
+    }
+
+    private async fetchSportsData(): Promise<SportsData> {
+        return await this.sportsApi.fetchSportsData();
+    }
+
+    private getWebviewContent(): string {
+        // Read the inline HTML file
+        const htmlPath = path.join(this.extensionUri.fsPath, 'src', 'webview.html');
+        const fs = require('fs');
+        let html = fs.readFileSync(htmlPath, 'utf8');
+        
+        // Replace the image source with the proper webview URI
+        const logoUri = this.panel?.webview.asWebviewUri(vscode.Uri.joinPath(this.extensionUri, 'src', 'SIDELINE.png'));
+        html = html.replace('src="SIDELINE.png"', `src="${logoUri}"`);
+        
+        return html;
+    }
+}

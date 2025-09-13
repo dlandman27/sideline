@@ -1,0 +1,22 @@
+<div class="game {gameClass}" onclick="openGame('{gameUrl}')">
+    <button class="tail-btn" onclick="event.stopPropagation(); tailGame({gameData})">Tail</button>
+    <div class="teams">
+        <div class="team">
+            {awayLogo}
+            <div class="team-name">{awayName}</div>
+            <div class="score">{awayScore}</div>
+        </div>
+        <div class="vs">@</div>
+        <div class="team">
+            {homeLogo}
+            <div class="team-name">{homeName}</div>
+            <div class="score">{homeScore}</div>
+        </div>
+    </div>
+    <div class="status">
+        {liveIndicator}
+        {status}
+        {quarter}
+        {scheduledTime}
+    </div>
+</div>
