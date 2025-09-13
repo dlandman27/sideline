@@ -1,7 +1,7 @@
 # Sideline - VS Code Sports Extension
 
 <div align="center">
-  <img src="src/SIDELINE.png" alt="Sideline Logo" width="200" height="200">
+  <img src="src/SIDELINE.png" alt="Sideline Logo" width="800" height="400">
 </div>
 
 <div align="center">
