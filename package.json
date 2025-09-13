@@ -3,6 +3,7 @@
   "displayName": "Sideline",
   "description": "Keep track of your favorite sports teams without leaving VS Code",
   "version": "0.0.1",
+  "icon": "src/SIDELINE.png",
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -31,7 +32,7 @@
     "commands": [
       {
         "command": "sideline.openPanel",
-        "title": "Open Sideline",
+        "title": "View Games",
         "category": "Sideline"
       },
       {
@@ -70,6 +71,16 @@
         {
           "command": "sideline.refresh",
           "when": "view == sideline",
+          "group": "navigation"
+        },
+        {
+          "command": "sideline.openPanel",
+          "when": "view == sidelineTracked",
+          "group": "navigation"
+        },
+        {
+          "command": "sideline.openPanel",
+          "when": "view == sidelineTrackedSecondary",
           "group": "navigation"
         }
       ],

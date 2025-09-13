@@ -12,7 +12,8 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
         this.extensionUri = extensionUri;
         
         // Listen for game updates
-        this.gameTracker.setOnGameUpdate(() => {
+        this.gameTracker.setOnGameUpdate((trackedGame, hasScoreChanged) => {
+            // Update the sidebar view when games change
             this.refresh();
         });
     }
@@ -103,7 +104,7 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
             font-size: 14px;
             color: var(--vscode-foreground);
             margin: 0;
-            padding: 40px 10px 10px 10px;
+            padding: 10px;
             min-height: 100vh;
             max-width: 300px;
             margin: 0 auto;
@@ -132,7 +133,14 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
         }
         
         .sport-section {
-            margin-bottom: 25px;
+            margin-bottom: 0;
+        }
+        
+        .section-divider {
+            margin: 8px 0;
+            border: none;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
         }
         
         .sport-title {
@@ -164,7 +172,7 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
         }
 
         #content {
-            padding-bottom: 100px;
+            padding-bottom: 20px;
         }
         
         .sport-content {
@@ -180,7 +188,7 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
         }
         
         .sport-section.collapsed {
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
         
         .sport-header {
@@ -324,7 +332,7 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
         .stop-btn {
             position: absolute;
             top: 4px;
-            left: 4px;
+            right: 4px;
             background: transparent;
             color: rgba(255, 255, 255, 0.5);
             border: none;
@@ -350,40 +358,72 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
         }
         
         .no-games {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #ffa500 0%, #1a1a1a 25%, #1a1a1a 75%, #ffa500 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            color: #a0a0a0;
             padding: 20px;
-            font-size: 14px;
-            font-style: italic;
+            box-sizing: border-box;
         }
         
-        .open-main-btn {
-            position: fixed;
-            top: 8px;
-            right: 8px;
+        .no-games::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #ffa500 0%, #1a1a1a 25%, #1a1a1a 75%, #ffa500 100%);
+            filter: blur(40px);
+            opacity: 0.8;
+            z-index: -1;
+        }
+        
+        .no-games-logo {
+            width: 80vw;
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 0;
+            filter: brightness(0) invert(1);
+        }
+        
+        .no-games-text {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 25px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .no-games-btn {
             background: rgba(255, 165, 0, 0.2);
             color: #ffa500;
             border: 1px solid #ffa500;
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 8px 16px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 500;
             font-size: 12px;
             transition: all 0.2s ease;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-            z-index: 10;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 2px 8px rgba(255, 165, 0, 0.3);
         }
         
-        .open-main-btn:hover {
+        .no-games-btn:hover {
             background: #ffa500;
             color: white;
-            transform: scale(1.1);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 165, 0, 0.4);
         }
+        
         
         .click-hint {
             font-size: 11px;
@@ -396,10 +436,11 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
 </head>
 <body>
     
-    <button class="open-main-btn" onclick="openMainComponent()" title="View All Games">+</button>
-    
     <div id="content">
-        <div class="no-games">Loading tracked games...</div>
+        <div class="no-games">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9Ijc1IiB2aWV3Qm94PSIwIDAgMzAwIDc1IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8dGV4dCB4PSIxNTAiIHk9IjQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkltcGFjdCwgQXJpYWwgQmxhY2ssIEhlbHZldGljYSBOZXVlLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQyIiBmb250LXdlaWdodD0iNjAwIiBsZXR0ZXItc3BhY2luZz0iMnB4Ij5TSURFTElORTwvdGV4dD4KPC9zdmc+" alt="SIDELINE" class="no-games-logo">
+            <div class="no-games-text">Loading tracked games...</div>
+        </div>
     </div>
     
     <script>
@@ -475,7 +516,7 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
             const content = document.getElementById('content');
             
             if (!trackedGames || trackedGames.length === 0) {
-                content.innerHTML = '<div class="no-games">No games being tracked<br><br>Click "View All Games" above to browse and start tracking!</div>';
+                content.innerHTML = '<div class="no-games"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9Ijc1IiB2aWV3Qm94PSIwIDAgMzAwIDc1IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8dGV4dCB4PSIxNTAiIHk9IjQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkltcGFjdCwgQXJpYWwgQmxhY2ssIEhlbHZldGljYSBOZXVlLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQyIiBmb250LXdlaWdodD0iNjAwIiBsZXR0ZXItc3BhY2luZz0iMnB4Ij5TSURFTElORTwvdGV4dD4KPC9zdmc+" alt="SIDELINE" class="no-games-logo"><div class="no-games-text">No games being tailed</div><button class="no-games-btn" onclick="openMainComponent()">View All Games</button></div>';
                 return;
             }
             
@@ -492,7 +533,8 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
             let html = '';
             
             // Render each sport section
-            Object.keys(gamesBySport).forEach(sport => {
+            const sportKeys = Object.keys(gamesBySport);
+            sportKeys.forEach((sport, index) => {
                 const games = gamesBySport[sport];
                 
                 // Get sport display info
@@ -547,6 +589,11 @@ export class TrackedGamesProvider implements vscode.WebviewViewProvider {
                         </div>
                     </div>
                 \`;
+                
+                // Add HR between sections (but not after the last one)
+                if (index < sportKeys.length - 1) {
+                    html += '<hr class="section-divider">';
+                }
             });
             
             content.innerHTML = html;
