@@ -24,7 +24,6 @@
   },
   "activationEvents": [
     "onCommand:sideline.openPanel",
-    "onView:sideline",
     "onView:sidelineTracked"
   ],
   "main": "./out/extension.js",
@@ -65,50 +64,15 @@
       "view/title": [
         {
           "command": "sideline.openPanel",
-          "when": "view == sideline",
-          "group": "navigation"
-        },
-        {
-          "command": "sideline.refresh",
-          "when": "view == sideline",
-          "group": "navigation"
-        },
-        {
-          "command": "sideline.openPanel",
           "when": "view == sidelineTracked",
           "group": "navigation"
-        },
-        {
-          "command": "sideline.openPanel",
-          "when": "view == sidelineTrackedSecondary",
-          "group": "navigation"
-        }
-      ],
-      "view/item/context": [
-        {
-          "command": "sideline.tailGame",
-          "when": "view == sideline",
-          "group": "inline"
         }
       ]
     },
     "views": {
-      "sideline": [
-        {
-          "id": "sideline",
-          "name": "Sideline",
-          "when": "true"
-        },
-        {
-          "id": "sidelineTracked",
-          "name": "Sideline",
-          "type": "webview",
-          "when": "true"
-        }
-      ],
       "explorer": [
         {
-          "id": "sidelineTrackedSecondary",
+          "id": "sidelineTracked",
           "name": "Sideline",
           "type": "webview",
           "when": "true"

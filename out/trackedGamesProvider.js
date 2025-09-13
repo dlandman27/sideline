@@ -85,7 +85,7 @@ class TrackedGamesProvider {
             margin: 0;
             padding: 10px;
             min-height: 100vh;
-            max-width: 300px;
+            max-width: 500px;
             margin: 0 auto;
             background: var(--vscode-editor-background);
             position: relative;

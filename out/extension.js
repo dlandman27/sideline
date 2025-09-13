@@ -13,11 +13,8 @@ function activate(context) {
     const provider = new sidelineProvider_1.SidelineProvider(context.extensionUri, gameTracker);
     // Create the tracked games provider
     const trackedGamesProvider = new trackedGamesProvider_1.TrackedGamesProvider(gameTracker, context.extensionUri);
-    // Register the tree data provider
-    vscode.window.registerTreeDataProvider('sideline', provider);
-    // Register the webview view providers (both locations)
+    // Register the webview view provider
     vscode.window.registerWebviewViewProvider('sidelineTracked', trackedGamesProvider);
-    vscode.window.registerWebviewViewProvider('sidelineTrackedSecondary', trackedGamesProvider);
     // Register the command to open the panel
     const openPanelCommand = vscode.commands.registerCommand('sideline.openPanel', () => {
         provider.openPanel();
