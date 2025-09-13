@@ -365,7 +365,7 @@ class SportsApiService {
         const logo = this.getTeamLogo(team) || logoService_1.LogoService.getLogo(abbreviation, sport);
         const colors = teamColors_1.TeamColorService.getTeamColors(abbreviation, sport) || teamColors_1.TeamColorService.getDefaultColors();
         return {
-            name: team.team?.abbreviation || team.team?.displayName || team.name,
+            name: team.team?.displayName || team.team?.name || team.name,
             score: parseInt(team.score) || 0,
             abbreviation: abbreviation,
             logo: logo,
@@ -384,9 +384,10 @@ class SportsApiService {
                     home: this.enhanceTeamData(homeTeam, 'nfl'),
                     away: this.enhanceTeamData(awayTeam, 'nfl'),
                     status: this.getGameStatus(competition.status.type),
-                    quarter: competition.status.period ? `${competition.status.period}${this.getOrdinal(competition.status.period)}` : undefined,
+                    quarter: (competition.status.period && !isNaN(competition.status.period) && competition.status.period > 0) ? `${competition.status.period}${this.getOrdinal(competition.status.period)}` : undefined,
                     date: event.date,
-                    time: new Date(event.date).toLocaleTimeString()
+                    time: new Date(event.date).toLocaleTimeString(),
+                    gameId: event.id
                 };
             }) || [];
             return { games };
@@ -407,9 +408,10 @@ class SportsApiService {
                     home: this.enhanceTeamData(homeTeam, 'nba'),
                     away: this.enhanceTeamData(awayTeam, 'nba'),
                     status: this.getGameStatus(competition.status.type),
-                    quarter: competition.status.period ? `${competition.status.period}${this.getOrdinal(competition.status.period)}` : undefined,
+                    quarter: (competition.status.period && !isNaN(competition.status.period) && competition.status.period > 0) ? `${competition.status.period}${this.getOrdinal(competition.status.period)}` : undefined,
                     date: event.date,
-                    time: new Date(event.date).toLocaleTimeString()
+                    time: new Date(event.date).toLocaleTimeString(),
+                    gameId: event.id
                 };
             }) || [];
             return { games };
@@ -432,7 +434,8 @@ class SportsApiService {
                     status: this.getSoccerStatus(competition.status.type),
                     minute: competition.status.displayClock,
                     date: event.date,
-                    time: new Date(event.date).toLocaleTimeString()
+                    time: new Date(event.date).toLocaleTimeString(),
+                    gameId: event.id
                 };
             }) || [];
             return { games };
@@ -449,13 +452,16 @@ class SportsApiService {
                 const competition = event.competitions[0];
                 const homeTeam = competition.competitors.find((c) => c.homeAway === 'home');
                 const awayTeam = competition.competitors.find((c) => c.homeAway === 'away');
+                const gameDate = event.date ? new Date(event.date) : null;
+                const isValidDate = gameDate && !isNaN(gameDate.getTime());
                 return {
                     home: this.enhanceTeamData(homeTeam, 'nhl'),
                     away: this.enhanceTeamData(awayTeam, 'nhl'),
                     status: this.getGameStatus(competition.status.type),
-                    quarter: competition.status.period ? `${competition.status.period}${this.getOrdinal(competition.status.period)}` : undefined,
+                    quarter: (competition.status.period && !isNaN(competition.status.period) && competition.status.period > 0) ? `${competition.status.period}${this.getOrdinal(competition.status.period)}` : undefined,
                     date: event.date,
-                    time: new Date(event.date).toLocaleTimeString()
+                    time: isValidDate ? gameDate.toLocaleTimeString() : undefined,
+                    gameId: event.id
                 };
             }) || [];
             return { games };
@@ -472,13 +478,33 @@ class SportsApiService {
                 const competition = event.competitions[0];
                 const homeTeam = competition.competitors.find((c) => c.homeAway === 'home');
                 const awayTeam = competition.competitors.find((c) => c.homeAway === 'away');
+                // For baseball, check multiple possible fields for inning information
+                let inningInfo = undefined;
+                let inningDisplay = undefined;
+                // Check if there's a period field (inning number)
+                if (competition.status.period && !isNaN(competition.status.period) && competition.status.period > 0) {
+                    inningInfo = competition.status.period;
+                }
+                // Check if there's displayClock (might contain inning info)
+                if (competition.status.displayClock) {
+                    inningDisplay = competition.status.displayClock;
+                }
+                // Check if there's a type description that might contain inning info
+                if (competition.status.type && competition.status.type.description) {
+                    const desc = competition.status.type.description.toLowerCase();
+                    if (desc.includes('inning') || desc.includes('top') || desc.includes('bottom')) {
+                        inningDisplay = competition.status.type.description;
+                    }
+                }
                 return {
                     home: this.enhanceTeamData(homeTeam, 'mlb'),
                     away: this.enhanceTeamData(awayTeam, 'mlb'),
                     status: this.getGameStatus(competition.status.type),
-                    quarter: competition.status.period ? `${competition.status.period}${this.getOrdinal(competition.status.period)}` : undefined,
+                    quarter: inningInfo ? `${inningInfo}${this.getOrdinal(inningInfo)}` : undefined,
+                    minute: inningDisplay || undefined,
                     date: event.date,
-                    time: new Date(event.date).toLocaleTimeString()
+                    time: new Date(event.date).toLocaleTimeString(),
+                    gameId: event.id
                 };
             }) || [];
             return { games };

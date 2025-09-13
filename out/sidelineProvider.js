@@ -117,6 +117,8 @@ class SidelineProvider {
     }
     async tailGame(gameData) {
         vscode.commands.executeCommand('sideline.tailGame', gameData);
+        // Refresh data to update the frontend with the new tracking state
+        await this.refreshData();
     }
     async fetchSportsData() {
         return await this.sportsApi.fetchSportsData();

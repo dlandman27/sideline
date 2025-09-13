@@ -31,7 +31,17 @@ function activate(context) {
     const tailGameCommand = vscode.commands.registerCommand('sideline.tailGame', (gameData) => {
         if (gameData) {
             const gameId = `${gameData.away.name}-${gameData.home.name}-${gameData.date}`;
-            gameTracker.startTracking(gameId, gameData, gameData.sport);
+            // Check if game is already being tracked
+            const trackedGames = gameTracker.getTrackedGames();
+            const isCurrentlyTracked = trackedGames.some(tg => tg.id === gameId);
+            if (isCurrentlyTracked) {
+                // Stop tracking if already tracked
+                gameTracker.stopTracking(gameId);
+            }
+            else {
+                // Start tracking if not tracked
+                gameTracker.startTracking(gameId, gameData, gameData.sport);
+            }
             trackedGamesProvider.refresh();
         }
     });
@@ -50,13 +60,15 @@ function activate(context) {
     // Add status bar item
     context.subscriptions.push(gameTracker.getStatusBarItem());
     // Set up game update callback
-    gameTracker.setOnGameUpdate((trackedGame) => {
+    gameTracker.setOnGameUpdate((trackedGame, hasScoreChanged) => {
         // Update the sidebar view when games change
         provider.refresh();
         trackedGamesProvider.refresh();
-        // Show notification for score changes
-        const game = trackedGame.game;
-        vscode.window.showInformationMessage(`Score Update: ${game.away.name} ${game.away.score} - ${game.home.score} ${game.home.name}`);
+        // Show notification only for score changes
+        if (hasScoreChanged) {
+            const game = trackedGame.game;
+            vscode.window.showInformationMessage(`Score Update: ${game.away.name} ${game.away.score} - ${game.home.score} ${game.home.name}`);
+        }
     });
     context.subscriptions.push(openPanelCommand, refreshCommand, tailGameCommand, stopTrackingCommand, openTrackedGamesPanelCommand);
 }

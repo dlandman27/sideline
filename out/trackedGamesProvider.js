@@ -79,7 +79,7 @@ class TrackedGamesProvider {
             font-size: 14px;
             color: var(--vscode-foreground);
             margin: 0;
-            padding: 10px;
+            padding: 40px 10px 10px 10px;
             min-height: 100vh;
             max-width: 300px;
             margin: 0 auto;
@@ -109,6 +109,54 @@ class TrackedGamesProvider {
         
         .sport-section {
             margin-bottom: 25px;
+        }
+        
+        .sport-title {
+            color: #a0a0a0;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: color 0.2s ease;
+        }
+        
+        .sport-title:hover {
+            color: #ffffff;
+        }
+        
+        .accordion-icon {
+            font-size: 10px;
+            transition: transform 0.2s ease;
+            color: #a0a0a0;
+        }
+        
+        .accordion-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        #content {
+            padding-bottom: 100px;
+        }
+        
+        .sport-content {
+            transition: all 0.3s ease;
+            overflow: hidden;
+            padding-top: 8px;
+        }
+        
+        .sport-content.collapsed {
+            max-height: 0;
+            margin-bottom: 0;
+            opacity: 0;
+        }
+        
+        .sport-section.collapsed {
+            margin-bottom: 8px;
         }
         
         .sport-header {
@@ -373,6 +421,32 @@ class TrackedGamesProvider {
             }
         }
         
+        function formatBaseballInning(quarter, minute) {
+            if (!quarter && !minute) return 'TBD';
+            
+            // Try to parse inning from quarter or minute
+            let inning = quarter || minute;
+            if (typeof inning === 'string') {
+                // Look for patterns like "1st", "2nd", "3rd", "4th", etc.
+                const inningMatch = inning.match(/(\d+)(st|nd|rd|th)/i);
+                if (inningMatch) {
+                    const inningNum = parseInt(inningMatch[1]);
+                    const isTop = inning.toLowerCase().includes('top') || inning.toLowerCase().includes('1st') || inning.toLowerCase().includes('3rd') || inning.toLowerCase().includes('5th') || inning.toLowerCase().includes('7th') || inning.toLowerCase().includes('9th');
+                    return isTop ? \`↑\${inningNum}\` : \`↓\${inningNum}\`;
+                }
+                
+                // Look for just numbers
+                const numMatch = inning.match(/(\d+)/);
+                if (numMatch) {
+                    const inningNum = parseInt(numMatch[1]);
+                    // Default to top of inning if we can't determine
+                    return \`↑\${inningNum}\`;
+                }
+            }
+            
+            return inning || 'TBD';
+        }
+        
         function renderTrackedGames(trackedGames) {
             const content = document.getElementById('content');
             
@@ -397,36 +471,56 @@ class TrackedGamesProvider {
             Object.keys(gamesBySport).forEach(sport => {
                 const games = gamesBySport[sport];
                 
+                // Get sport display info
+                const sportInfo = getSportInfo(sport);
+                
                 html += \`
                     <div class="sport-section">
+                        <div class="sport-title" onclick="toggleSportSection('\${sport}')">
+                            \${sportInfo.emoji} \${sportInfo.name} (\${games.length})
+                            <span class="accordion-icon" id="accordion-icon-\${sport}">▼</span>
+                        </div>
+                        <div class="sport-content" id="sport-content-\${sport}">
                         \${games.map(trackedGame => {
                             const game = trackedGame.game;
                             const isLive = game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live');
                             const awayColor = game.away.colors?.primary || '#4a5568';
                             const homeColor = game.home.colors?.primary || '#4a5568';
-                            const gradientStyle = \`background: linear-gradient(90deg, \${awayColor}40 0%, rgba(255,255,255,0.05) 50%, \${homeColor}40 100%);\`;
+                            
+                            // Premier League has home team on the left, other sports have away team on the left
+                            const isPremierLeague = trackedGame.sport === 'premierLeague';
+                            const leftTeam = isPremierLeague ? game.home : game.away;
+                            const rightTeam = isPremierLeague ? game.away : game.home;
+                            const leftColor = isPremierLeague ? homeColor : awayColor;
+                            const rightColor = isPremierLeague ? awayColor : homeColor;
+                            const scoreDisplay = isPremierLeague ? \`\${game.home.score} - \${game.away.score}\` : \`\${game.away.score} - \${game.home.score}\`;
+                            
+                            const gradientStyle = \`background: linear-gradient(90deg, \${leftColor}40 0%, rgba(255,255,255,0.05) 50%, \${rightColor}40 100%);\`;
                             
                             return \`
                                 <div class="game \${isLive ? 'live' : game.status === 'Final' || game.status === 'STATUS_FINAL' ? 'final' : ''}" style="\${gradientStyle}">
                                     <button class="stop-btn" onclick="stopTracking('\${trackedGame.id}')" title="Stop Tracking">×</button>
                                     <div class="teams">
                                         <div class="team">
-                                            \${game.away.logo ? \`<img src="\${game.away.logo}" alt="\${game.away.name}" class="team-logo" onerror="this.style.display='none'">\` : \`<div class="team-logo-fallback">\${game.away.name.charAt(0)}</div>\`}
-                                            <div class="team-name">\${game.away.name}</div>
+                                            \${leftTeam.logo ? \`<img src="\${leftTeam.logo}" alt="\${leftTeam.name}" class="team-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">\` : \`<div class="team-logo-fallback">\${leftTeam.name.charAt(0)}</div>\`}
+                                            \${leftTeam.logo ? \`<div class="team-logo-fallback" style="display: none;">\${leftTeam.name.charAt(0)}</div>\` : ''}
+                                            <div class="team-name">\${leftTeam.abbreviation || leftTeam.name}</div>
                                         </div>
                                         <div class="game-center">
-                                            <div class="game-score">\${game.away.score} - \${game.home.score}</div>
-                                            <div class="game-time">\${isLive ? '<span class="live-indicator">Live</span> ' : ''}\${game.status === 'STATUS_SCHEDULED' ? formatGameTime(game.date, game.time) : (game.quarter || game.minute || 'TBD')}</div>
-                                            <div class="game-status-center">\${game.status === 'STATUS_SCHEDULED' ? 'Scheduled' : game.status === 'STATUS_FINAL' ? 'Final' : isLive ? 'Live' : game.status} \${game.quarter ? \` - \${game.quarter}\` : game.minute ? \` - \${game.minute}\` : ''}</div>
+                                            <div class="game-score">\${scoreDisplay}</div>
+                                            <div class="game-time">\${isLive ? '<span class="live-indicator">Live</span> ' : ''}\${game.status === 'STATUS_SCHEDULED' ? formatGameTime(game.date, game.time) : (game.status === 'STATUS_FINAL' || game.status === 'STATUS_FULL_TIME') ? '' : isLive ? (trackedGame.sport === 'mlb' ? formatBaseballInning(game.quarter, game.minute) : (game.quarter || game.minute || 'TBD')) : ''}</div>
+                                            <div class="game-status-center">\${game.status === 'STATUS_SCHEDULED' ? '' : game.status === 'STATUS_FINAL' ? 'Final' : game.status === 'STATUS_FULL_TIME' ? 'Full Time' : game.status === 'STATUS_SECOND_HALF' ? '2nd Half' : game.status === 'STATUS_FIRST_HALF' ? '1st Half' : isLive ? 'Live' : game.status} \${isLive ? (trackedGame.sport === 'mlb' ? (game.quarter || game.minute ? \` - \${formatBaseballInning(game.quarter, game.minute)}\` : '') : (game.quarter ? \` - \${game.quarter}\` : game.minute ? \` - \${game.minute}\` : '')) : ''}</div>
                                         </div>
                                         <div class="team">
-                                            \${game.home.logo ? \`<img src="\${game.home.logo}" alt="\${game.home.name}" class="team-logo" onerror="this.style.display='none'">\` : \`<div class="team-logo-fallback">\${game.home.name.charAt(0)}</div>\`}
-                                            <div class="team-name">\${game.home.name}</div>
+                                            \${rightTeam.logo ? \`<img src="\${rightTeam.logo}" alt="\${rightTeam.name}" class="team-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">\` : \`<div class="team-logo-fallback">\${rightTeam.name.charAt(0)}</div>\`}
+                                            \${rightTeam.logo ? \`<div class="team-logo-fallback" style="display: none;">\${rightTeam.name.charAt(0)}</div>\` : ''}
+                                            <div class="team-name">\${rightTeam.abbreviation || rightTeam.name}</div>
                                         </div>
                                     </div>
                                 </div>
                             \`;
                         }).join('')}
+                        </div>
                     </div>
                 \`;
             });
@@ -455,6 +549,37 @@ class TrackedGamesProvider {
                 default: return sport.toUpperCase();
             }
         }
+        
+        function getSportInfo(sport) {
+            const logos = {
+                'nfl': 'https://a.espncdn.com/i/teamlogos/leagues/500/nfl.png',
+                'nba': 'https://a.espncdn.com/i/teamlogos/leagues/500/nba.png',
+                'premierLeague': 'https://logos-world.net/wp-content/uploads/2020/06/Premier-League-Logo.png',
+                'nhl': 'https://a.espncdn.com/i/teamlogos/leagues/500/nhl.png',
+                'mlb': 'https://a.espncdn.com/i/teamlogos/leagues/500/mlb.png'
+            };
+            
+            return {
+                name: getSportName(sport),
+                emoji: getSportEmoji(sport),
+                logo: logos[sport] || ''
+            };
+        }
+        
+        
+        function toggleSportSection(sportKey) {
+            const content = document.getElementById(\`sport-content-\${sportKey}\`);
+            const icon = document.getElementById(\`accordion-icon-\${sportKey}\`);
+            const section = content?.closest('.sport-section');
+            
+            if (content && icon && section) {
+                content.classList.toggle('collapsed');
+                icon.classList.toggle('collapsed');
+                section.classList.toggle('collapsed');
+                
+            }
+        }
+        
         
         // Listen for messages from the extension
         window.addEventListener('message', event => {

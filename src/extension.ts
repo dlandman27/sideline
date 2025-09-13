@@ -37,7 +37,19 @@ export function activate(context: vscode.ExtensionContext) {
     const tailGameCommand = vscode.commands.registerCommand('sideline.tailGame', (gameData) => {
         if (gameData) {
             const gameId = `${gameData.away.name}-${gameData.home.name}-${gameData.date}`;
-            gameTracker.startTracking(gameId, gameData, gameData.sport);
+            
+            // Check if game is already being tracked
+            const trackedGames = gameTracker.getTrackedGames();
+            const isCurrentlyTracked = trackedGames.some(tg => tg.id === gameId);
+            
+            if (isCurrentlyTracked) {
+                // Stop tracking if already tracked
+                gameTracker.stopTracking(gameId);
+            } else {
+                // Start tracking if not tracked
+                gameTracker.startTracking(gameId, gameData, gameData.sport);
+            }
+            
             trackedGamesProvider.refresh();
         }
     });
@@ -61,16 +73,21 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(gameTracker.getStatusBarItem());
 
     // Set up game update callback
-    gameTracker.setOnGameUpdate((trackedGame) => {
+    gameTracker.setOnGameUpdate((trackedGame, hasScoreChanged) => {
         // Update the sidebar view when games change
         provider.refresh();
         trackedGamesProvider.refresh();
         
-        // Show notification for score changes
-        const game = trackedGame.game;
-        vscode.window.showInformationMessage(
-            `Score Update: ${game.away.name} ${game.away.score} - ${game.home.score} ${game.home.name}`
-        );
+        // Show notification only for score changes
+        if (hasScoreChanged) {
+            const game = trackedGame.game;
+            // Premier League shows home team first, other sports show away team first
+            const isPremierLeague = trackedGame.sport === 'premierLeague';
+            const scoreMessage = isPremierLeague 
+                ? `Score Update: ${game.home.name} ${game.home.score} - ${game.away.score} ${game.away.name}`
+                : `Score Update: ${game.away.name} ${game.away.score} - ${game.home.score} ${game.home.name}`;
+            vscode.window.showInformationMessage(scoreMessage);
+        }
     });
 
     context.subscriptions.push(

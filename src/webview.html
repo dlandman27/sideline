@@ -50,6 +50,10 @@
             margin-bottom: 25px;
         }
         
+        .sport-section.collapsed {
+            margin-bottom: 8px;
+        }
+        
         .sport-header {
             background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(20px);
@@ -63,12 +67,64 @@
             border-radius: 12px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 12px;
             margin-bottom: 16px;
             position: sticky;
             top: 0;
             z-index: 100;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .sport-header:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .sport-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sport-header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sport-count {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: 500;
+            min-width: 24px;
+            text-align: center;
+        }
+        
+        .accordion-icon {
+            font-size: 14px;
+            transition: transform 0.2s ease;
+            color: #a0a0a0;
+            font-weight: bold;
+        }
+        
+        .accordion-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+        
+        .sport-content {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .sport-content.collapsed {
+            max-height: 0;
+            margin-bottom: 0;
+            opacity: 0;
         }
         
         @media (max-width: 600px) {
@@ -108,14 +164,14 @@
         }
         
         .tail-btn {
-            background: rgba(255, 165, 0, 0.2);
-            color: #ffa500;
-            border: 1px solid #ffa500;
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid #22c55e;
             padding: 6px 12px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 11px;
-            font-weight: 500;
+            font-weight: 600;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
@@ -123,9 +179,11 @@
             white-space: nowrap;
         }
         
-        .tail-btn.tailed {
-            background: #ffa500;
+        .tail-btn.tailing {
+            background: #22c55e;
             color: white;
+            border-color: #16a34a;
+            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
         }
         
         .see-more-btn {
@@ -145,10 +203,11 @@
         }
         
         .tail-btn:hover {
-            background: #ffa500;
+            background: #22c55e;
             color: white;
-            border: 1px solid #ffa500;
+            border: 1px solid #16a34a;
             transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
         }
         
         .see-more-btn:hover {
@@ -214,7 +273,7 @@
             color: #ffffff;
             text-align: center;
             font-family: 'Impact', 'Arial Black', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.5px;
         }
         
         .game-center {
@@ -327,18 +386,6 @@
             margin: 0 8px;
         }
         
-        .debug {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            margin: 15px 0;
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 11px;
-            max-height: 200px;
-            overflow-y: auto;
-            border-radius: 8px;
-            color: #a0a0a0;
-        }
         
         .no-games {
             text-align: center;
@@ -355,6 +402,124 @@
             font-style: italic;
         }
         
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-input {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 40px 10px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            width: 300px;
+            transition: all 0.2s ease;
+        }
+        
+        .search-input::placeholder {
+            color: #a0a0a0;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #ffa500;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.3);
+        }
+        
+        .clear-search {
+            position: absolute;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        
+        .clear-search:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .filter-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .filter-chip {
+            background: rgba(255, 255, 255, 0.1);
+            color: #a0a0a0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 80px;
+            justify-content: center;
+        }
+        
+        .filter-chip:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+        
+        .filter-chip.active {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+            border-color: #ffa500;
+        }
+        
+        .filter-chip.active:hover {
+            background: rgba(255, 165, 0, 0.3);
+        }
+        
+        .chip-text {
+            font-size: 11px;
+        }
+        
+        .chip-count {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: 600;
+            min-width: 16px;
+            text-align: center;
+        }
+        
+        .filter-chip.active .chip-count {
+            background: rgba(255, 165, 0, 0.3);
+            color: #ffa500;
+        }
+        
+        
     </style>
 </head>
 <body>
@@ -362,16 +527,42 @@
         <img src="SIDELINE.png" alt="Sideline" class="logo">
     </div>
     
+    <div class="controls">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for teams..." class="search-input" oninput="searchGames()">
+            <button class="clear-search" id="clearSearch" onclick="clearSearch()" style="display: none;">×</button>
+        </div>
+        <div class="filter-chips">
+            <button class="filter-chip active" id="filter-all" onclick="filterGames('all')">
+                <span class="chip-text">All</span>
+                <span class="chip-count" id="count-all">0</span>
+            </button>
+            <button class="filter-chip" id="filter-live" onclick="filterGames('live')">
+                <span class="chip-text">Live</span>
+                <span class="chip-count" id="count-live">0</span>
+            </button>
+            <button class="filter-chip" id="filter-completed" onclick="filterGames('completed')">
+                <span class="chip-text">Completed</span>
+                <span class="chip-count" id="count-completed">0</span>
+            </button>
+            <button class="filter-chip" id="filter-upcoming" onclick="filterGames('upcoming')">
+                <span class="chip-text">Upcoming</span>
+                <span class="chip-count" id="count-upcoming">0</span>
+            </button>
+            <button class="filter-chip" id="filter-tracked" onclick="filterGames('tracked')">
+                <span class="chip-text">Tailing</span>
+                <span class="chip-count" id="count-tracked">0</span>
+            </button>
+        </div>
+    </div>
+    
     <button class="refresh-btn" onclick="refreshData()">Refresh Scores</button>
+    
     
     <div id="content">
         <div class="loading">Loading sports data...</div>
     </div>
     
-    <div id="debug" class="debug" style="display: none;">
-        <strong>Debug Info:</strong><br>
-        <div id="debug-content"></div>
-    </div>
     
     <script>
         const vscode = acquireVsCodeApi();
@@ -384,6 +575,13 @@
             refreshBtn.classList.add('refreshing');
             refreshBtn.textContent = 'Refreshing...';
             
+            // Set a timeout to reset button if no response (safety net)
+            setTimeout(() => {
+                if (refreshBtn.disabled) {
+                    resetRefreshButton();
+                }
+            }, 10000); // 10 second timeout
+            
             vscode.postMessage({
                 command: 'refresh'
             });
@@ -395,6 +593,146 @@
             refreshBtn.classList.remove('refreshing');
             refreshBtn.textContent = 'Refresh Scores';
         }
+        
+        let currentData = null;
+        let currentFilter = 'all';
+        let currentSearchTerm = '';
+        
+        function filterGames(filterType) {
+            currentFilter = filterType;
+            
+            // Update active chip
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            document.getElementById(`filter-${filterType}`).classList.add('active');
+            
+            // Re-render with filtered data
+            if (currentData) {
+                renderData(currentData, true);
+            }
+        }
+        
+        function getGameStatus(game) {
+            const isLive = game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live');
+            const isCompleted = game.status === 'Final' || game.status === 'STATUS_FINAL' || game.status === 'STATUS_FULL_TIME';
+            const isScheduled = game.status === 'STATUS_SCHEDULED';
+            
+            if (isLive) return 'live';
+            if (isCompleted) return 'completed';
+            if (isScheduled) return 'upcoming';
+            return 'other';
+        }
+        
+        function filterGamesByStatus(games) {
+            let filteredGames = games;
+            
+            // Apply status filter
+            if (currentFilter !== 'all' && currentFilter !== 'tracked') {
+                filteredGames = filteredGames.filter(game => {
+                    const status = getGameStatus(game);
+                    return status === currentFilter;
+                });
+            }
+            
+            // Apply tracked filter
+            if (currentFilter === 'tracked') {
+                filteredGames = filteredGames.filter(game => {
+                    return game.isTailing;
+                });
+            }
+            
+            // Apply search filter
+            if (currentSearchTerm) {
+                filteredGames = filteredGames.filter(game => {
+                    const homeTeamName = game.home.name.toLowerCase();
+                    const awayTeamName = game.away.name.toLowerCase();
+                    const homeTeamAbbr = (game.home.abbreviation || '').toLowerCase();
+                    const awayTeamAbbr = (game.away.abbreviation || '').toLowerCase();
+                    
+                    return homeTeamName.includes(currentSearchTerm) || 
+                           awayTeamName.includes(currentSearchTerm) ||
+                           homeTeamAbbr.includes(currentSearchTerm) ||
+                           awayTeamAbbr.includes(currentSearchTerm);
+                });
+            }
+            
+            return filteredGames;
+        }
+        
+        function searchGames() {
+            const searchInput = document.getElementById('searchInput');
+            const clearButton = document.getElementById('clearSearch');
+            currentSearchTerm = searchInput.value.toLowerCase().trim();
+            
+            // Show/hide clear button
+            if (currentSearchTerm) {
+                clearButton.style.display = 'block';
+            } else {
+                clearButton.style.display = 'none';
+            }
+            
+            // Re-render with search and filter applied
+            if (currentData) {
+                renderData(currentData, true);
+            }
+        }
+        
+        function clearSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const clearButton = document.getElementById('clearSearch');
+            
+            searchInput.value = '';
+            currentSearchTerm = '';
+            clearButton.style.display = 'none';
+            
+            // Re-render without search
+            if (currentData) {
+                renderData(currentData, true);
+            }
+        }
+        
+        function toggleSportSection(sportKey) {
+            const content = document.getElementById(`sport-content-${sportKey}`);
+            const icon = document.getElementById(`accordion-icon-${sportKey}`);
+            const section = content?.closest('.sport-section');
+            
+            if (content && icon && section) {
+                content.classList.toggle('collapsed');
+                icon.classList.toggle('collapsed');
+                section.classList.toggle('collapsed');
+            }
+        }
+        
+        function updateFilterCounts(data) {
+            let counts = { all: 0, live: 0, completed: 0, upcoming: 0, tracked: 0 };
+            
+            // Count games across all sports
+            const allSports = [data.nfl, data.nba, data.premierLeague, data.nhl, data.mlb];
+            allSports.forEach(sport => {
+                if (sport?.games) {
+                    sport.games.forEach(game => {
+                        counts.all++;
+                        const status = getGameStatus(game);
+                        if (counts.hasOwnProperty(status)) {
+                            counts[status]++;
+                        }
+                        if (game.isTailing) {
+                            counts.tracked++;
+                        }
+                    });
+                }
+            });
+            
+            // Update chip counts
+            Object.keys(counts).forEach(status => {
+                const countElement = document.getElementById(`count-${status}`);
+                if (countElement) {
+                    countElement.textContent = counts[status];
+                }
+            });
+        }
+        
         
         function selectTeam(team) {
             vscode.postMessage({
@@ -411,13 +749,29 @@
         }
         
         function tailGame(gameData) {
+            // Immediately update the UI to show feedback
+            const button = event.target;
+            const isCurrentlyTailing = gameData.isTailing;
+            
+            if (isCurrentlyTailing) {
+                // Stop tailing
+                button.classList.remove('tailing');
+                button.textContent = 'Tail Game';
+                button.title = 'Tail Game';
+            } else {
+                // Start tailing
+                button.classList.add('tailing');
+                button.textContent = 'Tailing';
+                button.title = 'Stop Tailing';
+            }
+            
             vscode.postMessage({
                 command: 'tailGame',
                 gameData: gameData
             });
         }
         
-        function generateGameUrl(homeTeam, awayTeam, sport) {
+        function generateGameUrl(game) {
             const baseUrls = {
                 'nfl': 'https://www.espn.com/nfl/game/_/gameId/',
                 'nba': 'https://www.espn.com/nba/game/_/gameId/',
@@ -426,8 +780,13 @@
                 'mlb': 'https://www.espn.com/mlb/game/_/gameId/'
             };
             
-            // For now, we'll use a generic ESPN search URL since we don't have game IDs
-            const searchQuery = encodeURIComponent(`${awayTeam} vs ${homeTeam}`);
+            // Use the actual game ID if available
+            if (game.gameId) {
+                return baseUrls[game.sport] + game.gameId;
+            }
+            
+            // Fallback to search URL if no game ID
+            const searchQuery = encodeURIComponent(`${game.away.name} vs ${game.home.name}`);
             return `https://www.espn.com/search/results?q=${searchQuery}`;
         }
         
@@ -458,32 +817,90 @@
             }
         }
         
-        function renderData(data) {
-            const content = document.getElementById('content');
-            const debugDiv = document.getElementById('debug');
-            const debugContent = document.getElementById('debug-content');
+        function formatBaseballInning(quarter, minute) {
+            if (!quarter && !minute) return 'TBD';
             
-            // Show debug info
-            debugDiv.style.display = 'block';
-            debugContent.innerHTML = JSON.stringify(data, null, 2);
+            // Try to parse inning from quarter or minute
+            let inning = quarter || minute;
+            
+            
+            // Handle numeric values
+            if (typeof inning === 'number') {
+                if (isNaN(inning) || inning <= 0) return 'TBD';
+                return `↑${inning}`;
+            }
+            
+            if (typeof inning === 'string') {
+                // Look for patterns like "1st", "2nd", "3rd", "4th", etc.
+                const inningMatch = inning.match(/(\d+)(st|nd|rd|th)/i);
+                if (inningMatch) {
+                    const inningNum = parseInt(inningMatch[1]);
+                    if (isNaN(inningNum)) return 'TBD';
+                    // Check if the string contains "top" or "bottom" to determine inning half
+                    const isTop = inning.toLowerCase().includes('top');
+                    const isBottom = inning.toLowerCase().includes('bottom');
+                    if (isTop) return `↑${inningNum}`;
+                    if (isBottom) return `↓${inningNum}`;
+                    // If we can't determine top/bottom, default to top
+                    return `↑${inningNum}`;
+                }
+                
+                // Look for just numbers
+                const numMatch = inning.match(/(\d+)/);
+                if (numMatch) {
+                    const inningNum = parseInt(numMatch[1]);
+                    if (isNaN(inningNum)) return 'TBD';
+                    // Default to top of inning if we can't determine
+                    return `↑${inningNum}`;
+                }
+            }
+            
+            return 'TBD';
+        }
+        
+        function renderData(data, skipFiltering = false) {
+            const content = document.getElementById('content');
             
             if (!data) {
                 content.innerHTML = '<div class="loading">No data available</div>';
                 return;
             }
             
+            // Store current data for filtering
+            currentData = JSON.parse(JSON.stringify(data)); // Deep copy
+            
+            // Update filter counts
+            updateFilterCounts(data);
+            
+            // Apply current filter if any (but not when called from filterGames to avoid loop)
+            if (!skipFiltering) {
+                if (currentFilter !== 'all') {
+                    filterGames(currentFilter);
+                    return; // filterGames() will call renderData again
+                }
+            }
+            
             let html = '';
             
             // NFL Games
             if (data.nfl && data.nfl.games && data.nfl.games.length > 0) {
-                html += `
-                    <div class="sport-section">
-                        <div class="sport-header">
-                            <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nfl.png" alt="NFL" class="league-logo" onerror="this.style.display='none'">
-                            🏈 NFL
-                        </div>
-                        ${data.nfl.games.map(game => {
-                            const gameUrl = generateGameUrl(game.home.name, game.away.name, 'nfl');
+                const filteredNflGames = filterGamesByStatus(data.nfl.games);
+                if (filteredNflGames.length > 0) {
+                    html += `
+                        <div class="sport-section">
+                            <div class="sport-header" onclick="toggleSportSection('nfl')">
+                                <div class="sport-header-left">
+                                    <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nfl.png" alt="NFL" class="league-logo" onerror="this.style.display='none'">
+                                    🏈 NFL
+                                </div>
+                                <div class="sport-header-right">
+                                    <span class="sport-count">${filteredNflGames.length}</span>
+                                    <span class="accordion-icon" id="accordion-icon-nfl">▼</span>
+                                </div>
+                            </div>
+                            <div class="sport-content" id="sport-content-nfl">
+                            ${filteredNflGames.map(game => {
+                            const gameUrl = generateGameUrl({...game, sport: 'nfl'});
                             const gameData = { ...game, sport: 'nfl' };
                             const awayColor = game.away.colors?.primary || '#4a5568';
                             const homeColor = game.home.colors?.primary || '#4a5568';
@@ -493,39 +910,50 @@
                                 <div class="teams">
                                     <div class="team">
                                         ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
-                                        <div class="team-name">${game.away.name}</div>
+                                        <div class="team-name">${game.away.abbreviation || game.away.name}</div>
                                     </div>
                                     <div class="game-center">
                                         <div class="game-score">${game.away.score} - ${game.home.score}</div>
-                                        <div class="game-time">${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? '<span class="live-indicator">Live</span> ' : ''}${game.status === 'STATUS_SCHEDULED' ? formatGameTime(game.date, game.time) : (game.quarter || game.minute || 'TBD')}</div>
-                                        <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? 'Scheduled' : game.status === 'STATUS_FINAL' ? 'Final' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : ''}</div>
+                                        <div class="game-time">${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? '<span class="live-indicator">Live</span> ' : ''}${game.status === 'STATUS_SCHEDULED' ? formatGameTime(game.date, game.time) : (game.status === 'STATUS_FINAL' || game.status === 'STATUS_FULL_TIME') ? formatGameTime(game.date, game.time) : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? (game.quarter || game.minute || 'TBD') : ''}</div>
+                                        <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? '' : game.status === 'STATUS_FINAL' ? 'Final' : game.status === 'STATUS_FULL_TIME' ? 'Full Time' : game.status === 'STATUS_SECOND_HALF' ? '2nd Half' : game.status === 'STATUS_FIRST_HALF' ? '1st Half' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? (game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : '') : ''}</div>
                                     </div>
                                     <div class="team">
                                         ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
-                                        <div class="team-name">${game.home.name}</div>
+                                        <div class="team-name">${game.home.abbreviation || game.home.name}</div>
                                     </div>
                                 </div>
                                 <div class="game-buttons">
                                     <button class="see-more-btn" onclick="openGame('${gameUrl}')" title="View More">View More</button>
-                                    <button class="tail-btn ${game.isTailing ? 'tailed' : ''}" onclick="tailGame(${JSON.stringify(gameData).replace(/"/g, '&quot;')})" title="${game.isTailing ? 'Stop Tailing' : 'Tail Game'}">${game.isTailing ? 'Tailing' : 'Tail Game'}</button>
+                                    <button class="tail-btn ${game.isTailing ? 'tailing' : ''}" onclick="tailGame(${JSON.stringify(gameData).replace(/"/g, '&quot;')})" title="${game.isTailing ? 'Stop Tailing' : 'Tail Game'}">${game.isTailing ? 'Tailing' : 'Tail Game'}</button>
                                 </div>
                             </div>
                         `;
-                        }).join('')}
-                    </div>
-                `;
+                            }).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
             }
             
             // NBA Games
             if (data.nba && data.nba.games && data.nba.games.length > 0) {
-                html += `
-                    <div class="sport-section">
-                        <div class="sport-header">
-                            <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nba.png" alt="NBA" class="league-logo" onerror="this.style.display='none'">
-                            🏀 NBA
-                        </div>
-                        ${data.nba.games.map(game => {
-                            const gameUrl = generateGameUrl(game.home.name, game.away.name, 'nba');
+                const filteredNbaGames = filterGamesByStatus(data.nba.games);
+                if (filteredNbaGames.length > 0) {
+                    html += `
+                        <div class="sport-section">
+                            <div class="sport-header" onclick="toggleSportSection('nba')">
+                                <div class="sport-header-left">
+                                    <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nba.png" alt="NBA" class="league-logo" onerror="this.style.display='none'">
+                                    🏀 NBA
+                                </div>
+                                <div class="sport-header-right">
+                                    <span class="sport-count">${filteredNbaGames.length}</span>
+                                    <span class="accordion-icon" id="accordion-icon-nba">▼</span>
+                                </div>
+                            </div>
+                            <div class="sport-content" id="sport-content-nba">
+                            ${filteredNbaGames.map(game => {
+                            const gameUrl = generateGameUrl({...game, sport: 'nba'});
                             const gameData = { ...game, sport: 'nba' };
                             const awayColor = game.away.colors?.primary || '#4a5568';
                             const homeColor = game.home.colors?.primary || '#4a5568';
@@ -535,81 +963,103 @@
                                 <div class="teams">
                                     <div class="team">
                                         ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
-                                        <div class="team-name">${game.away.name}</div>
+                                        <div class="team-name">${game.away.abbreviation || game.away.name}</div>
                                     </div>
                                     <div class="game-center">
                                         <div class="game-score">${game.away.score} - ${game.home.score}</div>
-                                        <div class="game-time">${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? '<span class="live-indicator">Live</span> ' : ''}${game.status === 'STATUS_SCHEDULED' ? formatGameTime(game.date, game.time) : (game.quarter || game.minute || 'TBD')}</div>
-                                        <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? 'Scheduled' : game.status === 'STATUS_FINAL' ? 'Final' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : ''}</div>
+                                        <div class="game-time">${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? '<span class="live-indicator">Live</span> ' : ''}${game.status === 'STATUS_SCHEDULED' ? formatGameTime(game.date, game.time) : (game.status === 'STATUS_FINAL' || game.status === 'STATUS_FULL_TIME') ? formatGameTime(game.date, game.time) : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? (game.quarter || game.minute || 'TBD') : ''}</div>
+                                        <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? '' : game.status === 'STATUS_FINAL' ? 'Final' : game.status === 'STATUS_FULL_TIME' ? 'Full Time' : game.status === 'STATUS_SECOND_HALF' ? '2nd Half' : game.status === 'STATUS_FIRST_HALF' ? '1st Half' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? (game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : '') : ''}</div>
                                     </div>
                                     <div class="team">
                                         ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
-                                        <div class="team-name">${game.home.name}</div>
+                                        <div class="team-name">${game.home.abbreviation || game.home.name}</div>
                                     </div>
                                 </div>
                                 <div class="game-buttons">
                                     <button class="see-more-btn" onclick="openGame('${gameUrl}')" title="View More">View More</button>
-                                    <button class="tail-btn ${game.isTailing ? 'tailed' : ''}" onclick="tailGame(${JSON.stringify(gameData).replace(/"/g, '&quot;')})" title="${game.isTailing ? 'Stop Tailing' : 'Tail Game'}">${game.isTailing ? 'Tailing' : 'Tail Game'}</button>
+                                    <button class="tail-btn ${game.isTailing ? 'tailing' : ''}" onclick="tailGame(${JSON.stringify(gameData).replace(/"/g, '&quot;')})" title="${game.isTailing ? 'Stop Tailing' : 'Tail Game'}">${game.isTailing ? 'Tailing' : 'Tail Game'}</button>
                                 </div>
                             </div>
                         `;
-                        }).join('')}
-                    </div>
-                `;
+                            }).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
             }
             
             // Premier League Games
             if (data.premierLeague && data.premierLeague.games && data.premierLeague.games.length > 0) {
-                html += `
-                    <div class="sport-section">
-                        <div class="sport-header">
-                            <img src="https://a.espncdn.com/i/teamlogos/leagues/500/eng.1.png" alt="Premier League" class="league-logo" onerror="this.style.display='none'">
-                            ⚽ Premier League
-                        </div>
-                        ${data.premierLeague.games.map(game => {
-                            const gameUrl = generateGameUrl(game.home.name, game.away.name, 'premierLeague');
+                const filteredPremierGames = filterGamesByStatus(data.premierLeague.games);
+                if (filteredPremierGames.length > 0) {
+                    html += `
+                        <div class="sport-section">
+                            <div class="sport-header" onclick="toggleSportSection('premierLeague')">
+                                <div class="sport-header-left">
+                                    <img src="https://cdn.brandfetch.io/id3ei9Uwhu/w/177/h/224/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&t=1737356858593" alt="NBA" class="league-logo" onerror="this.style.display='none'">
+                                    ⚽ Premier League
+                                </div>
+                                <div class="sport-header-right">
+                                    <span class="sport-count">${filteredPremierGames.length}</span>
+                                    <span class="accordion-icon" id="accordion-icon-premierLeague">▼</span>
+                                </div>
+                            </div>
+                            <div class="sport-content" id="sport-content-premierLeague">
+                            ${filteredPremierGames.map(game => {
+                            const gameUrl = generateGameUrl({...game, sport: 'premierLeague'});
                             const gameData = { ...game, sport: 'premierLeague' };
                             const awayColor = game.away.colors?.primary || '#4a5568';
                             const homeColor = game.home.colors?.primary || '#4a5568';
-                            const gradientStyle = `background: linear-gradient(90deg, ${awayColor}40 0%, rgba(255,255,255,0.05) 50%, ${homeColor}40 100%);`;
+                            const gradientStyle = `background: linear-gradient(90deg, ${homeColor}40 0%, rgba(255,255,255,0.05) 50%, ${awayColor}40 100%);`;
                             return `
                             <div class="game ${game.status === 'Live' ? 'live' : game.status === 'Full Time' ? 'final' : ''}" style="${gradientStyle}">
                                 <div class="teams">
                                     <div class="team">
-                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
-                                        <div class="team-name">${game.away.name}</div>
+                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
+                                        <div class="team-name">${game.home.abbreviation || game.home.name}</div>
                                     </div>
                                     <div class="game-center">
-                                        <div class="game-score">${game.away.score} - ${game.home.score}</div>
-                                        <div class="game-time">${game.status === 'STATUS_SCHEDULED' ? formatGameTime(game.date, game.time) : (game.minute || 'TBD')}</div>
-                                        <div class="game-status-center">${game.status === 'STATUS_FULL_TIME' ? 'Full Time' : game.status === 'STATUS_SECOND_HALF' ? '2nd Half' : game.status === 'STATUS_FIRST_HALF' ? '1st Half' : game.status === 'STATUS_SCHEDULED' ? '' : game.status} ${game.minute ? ` - ${game.minute}` : ''}</div>
+                                        <div class="game-score">${game.home.score} - ${game.away.score}</div>
+                                        <div class="game-time">${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? '<span class="live-indicator">Live</span> ' : ''}${game.status === 'STATUS_SCHEDULED' ? formatGameTime(game.date, game.time) : (game.status === 'STATUS_FINAL' || game.status === 'STATUS_FULL_TIME') ? formatGameTime(game.date, game.time) : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? (game.quarter || game.minute || 'TBD') : ''}</div>
+                                        <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? '' : game.status === 'STATUS_FINAL' ? 'Final' : game.status === 'STATUS_FULL_TIME' ? 'Full Time' : game.status === 'STATUS_SECOND_HALF' ? '2nd Half' : game.status === 'STATUS_FIRST_HALF' ? '1st Half' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? (game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : '') : ''}</div>
                                     </div>
                                     <div class="team">
-                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
-                                        <div class="team-name">${game.home.name}</div>
+                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
+                                        <div class="team-name">${game.away.abbreviation || game.away.name}</div>
                                     </div>
                                 </div>
                                 <div class="game-buttons">
                                     <button class="see-more-btn" onclick="openGame('${gameUrl}')" title="View More">View More</button>
-                                    <button class="tail-btn ${game.isTailing ? 'tailed' : ''}" onclick="tailGame(${JSON.stringify(gameData).replace(/"/g, '&quot;')})" title="${game.isTailing ? 'Stop Tailing' : 'Tail Game'}">${game.isTailing ? 'Tailing' : 'Tail Game'}</button>
+                                    <button class="tail-btn ${game.isTailing ? 'tailing' : ''}" onclick="tailGame(${JSON.stringify(gameData).replace(/"/g, '&quot;')})" title="${game.isTailing ? 'Stop Tailing' : 'Tail Game'}">${game.isTailing ? 'Tailing' : 'Tail Game'}</button>
                                 </div>
                             </div>
                         `;
-                        }).join('')}
-                    </div>
-                `;
+                            }).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
             }
             
             // NHL Games
             if (data.nhl && data.nhl.games && data.nhl.games.length > 0) {
-                html += `
-                    <div class="sport-section">
-                        <div class="sport-header">
-                            <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nhl.png" alt="NHL" class="league-logo" onerror="this.style.display='none'">
-                            🏒 NHL
-                        </div>
-                        ${data.nhl.games.map(game => {
-                            const gameUrl = generateGameUrl(game.home.name, game.away.name, 'nhl');
+                const filteredNhlGames = filterGamesByStatus(data.nhl.games);
+                if (filteredNhlGames.length > 0) {
+                    html += `
+                        <div class="sport-section">
+                            <div class="sport-header" onclick="toggleSportSection('nhl')">
+                                <div class="sport-header-left">
+                                    <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nhl.png" alt="NHL" class="league-logo" onerror="this.style.display='none'">
+                                    🏒 NHL
+                                </div>
+                                <div class="sport-header-right">
+                                    <span class="sport-count">${filteredNhlGames.length}</span>
+                                    <span class="accordion-icon" id="accordion-icon-nhl">▼</span>
+                                </div>
+                            </div>
+                            <div class="sport-content" id="sport-content-nhl">
+                            ${filteredNhlGames.map(game => {
+                            const gameUrl = generateGameUrl({...game, sport: 'nhl'});
                             const gameData = { ...game, sport: 'nhl' };
                             const awayColor = game.away.colors?.primary || '#4a5568';
                             const homeColor = game.home.colors?.primary || '#4a5568';
@@ -619,39 +1069,50 @@
                                 <div class="teams">
                                     <div class="team">
                                         ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
-                                        <div class="team-name">${game.away.name}</div>
+                                        <div class="team-name">${game.away.abbreviation || game.away.name}</div>
                                     </div>
                                     <div class="game-center">
                                         <div class="game-score">${game.away.score} - ${game.home.score}</div>
                                         <div class="game-time">${game.status === 'STATUS_SCHEDULED' ? (game.time ? new Date(game.time).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }) : 'TBD') : (game.time ? new Date(game.time).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) : (game.quarter || game.minute || 'TBD'))}</div>
-                                        <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? 'Scheduled' : game.status === 'STATUS_FINAL' ? 'Final' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : ''}</div>
+                                        <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? '' : game.status === 'STATUS_FINAL' ? 'Final' : game.status === 'STATUS_FULL_TIME' ? 'Full Time' : game.status === 'STATUS_SECOND_HALF' ? '2nd Half' : game.status === 'STATUS_FIRST_HALF' ? '1st Half' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? (game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : '') : ''}</div>
                                     </div>
                                     <div class="team">
                                         ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
-                                        <div class="team-name">${game.home.name}</div>
+                                        <div class="team-name">${game.home.abbreviation || game.home.name}</div>
                                     </div>
                                 </div>
                                 <div class="game-buttons">
                                     <button class="see-more-btn" onclick="openGame('${gameUrl}')" title="View More">View More</button>
-                                    <button class="tail-btn ${game.isTailing ? 'tailed' : ''}" onclick="tailGame(${JSON.stringify(gameData).replace(/"/g, '&quot;')})" title="${game.isTailing ? 'Stop Tailing' : 'Tail Game'}">${game.isTailing ? 'Tailing' : 'Tail Game'}</button>
+                                    <button class="tail-btn ${game.isTailing ? 'tailing' : ''}" onclick="tailGame(${JSON.stringify(gameData).replace(/"/g, '&quot;')})" title="${game.isTailing ? 'Stop Tailing' : 'Tail Game'}">${game.isTailing ? 'Tailing' : 'Tail Game'}</button>
                                 </div>
                             </div>
                         `;
-                        }).join('')}
-                    </div>
-                `;
+                            }).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
             }
             
             // MLB Games
             if (data.mlb && data.mlb.games && data.mlb.games.length > 0) {
-                html += `
-                    <div class="sport-section">
-                        <div class="sport-header">
-                            <img src="https://a.espncdn.com/i/teamlogos/leagues/500/mlb.png" alt="MLB" class="league-logo" onerror="this.style.display='none'">
-                            ⚾ MLB
-                        </div>
-                        ${data.mlb.games.map(game => {
-                            const gameUrl = generateGameUrl(game.home.name, game.away.name, 'mlb');
+                const filteredMlbGames = filterGamesByStatus(data.mlb.games);
+                if (filteredMlbGames.length > 0) {
+                    html += `
+                        <div class="sport-section">
+                            <div class="sport-header" onclick="toggleSportSection('mlb')">
+                                <div class="sport-header-left">
+                                    <img src="https://a.espncdn.com/i/teamlogos/leagues/500/mlb.png" alt="MLB" class="league-logo" onerror="this.style.display='none'">
+                                    ⚾ MLB
+                                </div>
+                                <div class="sport-header-right">
+                                    <span class="sport-count">${filteredMlbGames.length}</span>
+                                    <span class="accordion-icon" id="accordion-icon-mlb">▼</span>
+                                </div>
+                            </div>
+                            <div class="sport-content" id="sport-content-mlb">
+                            ${filteredMlbGames.map(game => {
+                            const gameUrl = generateGameUrl({...game, sport: 'mlb'});
                             const gameData = { ...game, sport: 'mlb' };
                             const awayColor = game.away.colors?.primary || '#4a5568';
                             const homeColor = game.home.colors?.primary || '#4a5568';
@@ -661,31 +1122,37 @@
                                 <div class="teams">
                                     <div class="team">
                                         ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
-                                        <div class="team-name">${game.away.name}</div>
+                                        <div class="team-name">${game.away.abbreviation || game.away.name}</div>
                                     </div>
                                     <div class="game-center">
                                         <div class="game-score">${game.away.score} - ${game.home.score}</div>
-                                        <div class="game-time">${game.status === 'STATUS_SCHEDULED' ? formatGameTime(game.date, game.time) : (game.quarter || game.minute || 'TBD')}</div>
-                                        <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? 'Scheduled' : game.status === 'STATUS_FINAL' ? 'Final' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : ''}</div>
+                                        <div class="game-time">${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? '<span class="live-indicator">Live</span> ' : ''}${game.status === 'STATUS_SCHEDULED' ? formatGameTime(game.date, game.time) : (game.status === 'STATUS_FINAL' || game.status === 'STATUS_FULL_TIME') ? formatGameTime(game.date, game.time) : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? formatBaseballInning(game.quarter, game.minute) : ''}</div>
+                                        <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? '' : game.status === 'STATUS_FINAL' ? 'Final' : game.status === 'STATUS_FULL_TIME' ? 'Full Time' : game.status === 'STATUS_SECOND_HALF' ? '2nd Half' : game.status === 'STATUS_FIRST_HALF' ? '1st Half' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? (game.quarter || game.minute ? ` - ${formatBaseballInning(game.quarter, game.minute)}` : '') : ''}</div>
                                     </div>
                                     <div class="team">
                                         ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
-                                        <div class="team-name">${game.home.name}</div>
+                                        <div class="team-name">${game.home.abbreviation || game.home.name}</div>
                                     </div>
                                 </div>
                                 <div class="game-buttons">
                                     <button class="see-more-btn" onclick="openGame('${gameUrl}')" title="View More">View More</button>
-                                    <button class="tail-btn ${game.isTailing ? 'tailed' : ''}" onclick="tailGame(${JSON.stringify(gameData).replace(/"/g, '&quot;')})" title="${game.isTailing ? 'Stop Tailing' : 'Tail Game'}">${game.isTailing ? 'Tailing' : 'Tail Game'}</button>
+                                    <button class="tail-btn ${game.isTailing ? 'tailing' : ''}" onclick="tailGame(${JSON.stringify(gameData).replace(/"/g, '&quot;')})" title="${game.isTailing ? 'Stop Tailing' : 'Tail Game'}">${game.isTailing ? 'Tailing' : 'Tail Game'}</button>
                                 </div>
                             </div>
                         `;
-                        }).join('')}
-                    </div>
-                `;
+                            }).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
             }
             
             if (html === '') {
-                html = '<div class="no-games">No games scheduled for today</div>';
+                if (currentFilter === 'tracked') {
+                    html = '<div class="no-games">No games currently being tailed</div>';
+                } else {
+                    html = '<div class="no-games">No games scheduled for today</div>';
+                }
             }
             
             content.innerHTML = html;

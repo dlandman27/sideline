@@ -144,6 +144,8 @@ export class SidelineProvider implements vscode.TreeDataProvider<vscode.TreeItem
 
     private async tailGame(gameData: any): Promise<void> {
         vscode.commands.executeCommand('sideline.tailGame', gameData);
+        // Refresh data to update the frontend with the new tracking state
+        await this.refreshData();
     }
 
     private async fetchSportsData(): Promise<SportsData> {

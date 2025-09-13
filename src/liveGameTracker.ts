@@ -15,7 +15,7 @@ export class LiveGameTracker {
     private refreshTimers: Map<string, NodeJS.Timeout> = new Map();
     private sportsApi: SportsApiService;
     private statusBarItem: vscode.StatusBarItem;
-    private onGameUpdateCallback?: (game: TrackedGame) => void;
+    private onGameUpdateCallback?: (game: TrackedGame, hasScoreChanged?: boolean) => void;
 
     constructor() {
         this.sportsApi = new SportsApiService();
@@ -37,8 +37,6 @@ export class LiveGameTracker {
         this.trackedGames.set(gameId, trackedGame);
         this.startRefreshTimer(gameId);
         this.updateStatusBar();
-        
-        vscode.window.showInformationMessage(`Now tracking ${game.away.name} @ ${game.home.name}`);
     }
 
     // Stop tracking a game
@@ -46,8 +44,6 @@ export class LiveGameTracker {
         this.trackedGames.delete(gameId);
         this.stopRefreshTimer(gameId);
         this.updateStatusBar();
-        
-        vscode.window.showInformationMessage(`Stopped tracking game ${gameId}`);
     }
 
     // Get all tracked games
@@ -56,7 +52,7 @@ export class LiveGameTracker {
     }
 
     // Set callback for game updates
-    setOnGameUpdate(callback: (game: TrackedGame) => void): void {
+    setOnGameUpdate(callback: (game: TrackedGame, hasScoreChanged?: boolean) => void): void {
         this.onGameUpdateCallback = callback;
     }
 
@@ -116,12 +112,13 @@ export class LiveGameTracker {
             if (updatedGame) {
                 // Check if the game has been updated
                 const hasChanged = this.hasGameChanged(trackedGame.game, updatedGame);
+                const scoreChanged = this.hasScoreChanged(trackedGame.game, updatedGame);
                 
                 trackedGame.game = updatedGame;
                 trackedGame.lastUpdate = new Date();
 
                 if (hasChanged && this.onGameUpdateCallback) {
-                    this.onGameUpdateCallback(trackedGame);
+                    this.onGameUpdateCallback(trackedGame, scoreChanged);
                 }
             }
         } catch (error) {
@@ -142,6 +139,14 @@ export class LiveGameTracker {
             oldGame.status !== newGame.status ||
             oldGame.quarter !== newGame.quarter ||
             oldGame.minute !== newGame.minute
+        );
+    }
+
+    // Check if only the score has changed
+    private hasScoreChanged(oldGame: Game, newGame: Game): boolean {
+        return (
+            oldGame.away.score !== newGame.away.score ||
+            oldGame.home.score !== newGame.home.score
         );
     }
 

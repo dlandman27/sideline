@@ -24,14 +24,12 @@ class LiveGameTracker {
         this.trackedGames.set(gameId, trackedGame);
         this.startRefreshTimer(gameId);
         this.updateStatusBar();
-        vscode.window.showInformationMessage(`Now tracking ${game.away.name} @ ${game.home.name}`);
     }
     // Stop tracking a game
     stopTracking(gameId) {
         this.trackedGames.delete(gameId);
         this.stopRefreshTimer(gameId);
         this.updateStatusBar();
-        vscode.window.showInformationMessage(`Stopped tracking game ${gameId}`);
     }
     // Get all tracked games
     getTrackedGames() {
@@ -93,10 +91,11 @@ class LiveGameTracker {
             if (updatedGame) {
                 // Check if the game has been updated
                 const hasChanged = this.hasGameChanged(trackedGame.game, updatedGame);
+                const scoreChanged = this.hasScoreChanged(trackedGame.game, updatedGame);
                 trackedGame.game = updatedGame;
                 trackedGame.lastUpdate = new Date();
                 if (hasChanged && this.onGameUpdateCallback) {
-                    this.onGameUpdateCallback(trackedGame);
+                    this.onGameUpdateCallback(trackedGame, scoreChanged);
                 }
             }
         }
@@ -115,6 +114,11 @@ class LiveGameTracker {
             oldGame.status !== newGame.status ||
             oldGame.quarter !== newGame.quarter ||
             oldGame.minute !== newGame.minute);
+    }
+    // Check if only the score has changed
+    hasScoreChanged(oldGame, newGame) {
+        return (oldGame.away.score !== newGame.away.score ||
+            oldGame.home.score !== newGame.home.score);
     }
     // Update the status bar
     updateStatusBar() {
