@@ -688,13 +688,24 @@ class TrackedGameItem extends vscode.TreeItem {
     }
     static formatTime(game) {
         if (game.time) {
-            // Format time like "8:30 PM"
-            const date = new Date(game.time);
-            return date.toLocaleTimeString('en-US', {
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: true
-            });
+            // If game.time is already a formatted time string, return it as is
+            // If it's a date string, format it properly
+            if (game.time.includes(':')) {
+                // Already formatted time string
+                return game.time;
+            }
+            else {
+                // Date string that needs formatting
+                const date = new Date(game.time);
+                if (isNaN(date.getTime())) {
+                    return 'TBD';
+                }
+                return date.toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            }
         }
         else if (game.quarter || game.minute) {
             // Show quarter/period for live games

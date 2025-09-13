@@ -67,7 +67,12 @@ function activate(context) {
         // Show notification only for score changes
         if (hasScoreChanged) {
             const game = trackedGame.game;
-            vscode.window.showInformationMessage(`Score Update: ${game.away.name} ${game.away.score} - ${game.home.score} ${game.home.name}`);
+            // Premier League shows home team first, other sports show away team first
+            const isPremierLeague = trackedGame.sport === 'premierLeague';
+            const scoreMessage = isPremierLeague
+                ? `Score Update: ${game.home.name} ${game.home.score} - ${game.away.score} ${game.away.name}`
+                : `Score Update: ${game.away.name} ${game.away.score} - ${game.home.score} ${game.home.name}`;
+            vscode.window.showInformationMessage(scoreMessage);
         }
     });
     context.subscriptions.push(openPanelCommand, refreshCommand, tailGameCommand, stopTrackingCommand, openTrackedGamesPanelCommand);
