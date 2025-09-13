@@ -54,7 +54,7 @@ class SidelineProvider {
                         this.selectTeam(message.team);
                         return;
                     case 'openGame':
-                        this.openGameInBrowser(message.gameUrl);
+                        this.openGameInBrowser(message.url);
                         return;
                     case 'tailGame':
                         this.tailGame(message.gameData);

@@ -37,6 +37,9 @@ class TrackedGamesProvider {
                 case 'openMainComponent':
                     vscode.commands.executeCommand('sideline.openPanel');
                     return;
+                case 'openGame':
+                    vscode.env.openExternal(vscode.Uri.parse(message.url));
+                    return;
             }
         }, undefined, []);
         // Initial load
@@ -325,12 +328,42 @@ class TrackedGamesProvider {
             height: 14px;
             line-height: 1;
             opacity: 0.7;
+            z-index: 10;
         }
         
         .stop-btn:hover {
             background: rgba(255, 107, 107, 0.1);
             color: rgba(255, 107, 107, 0.8);
             opacity: 1;
+        }
+        
+        .game-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        
+        .see-more-btn {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+            border: 1px solid #ffa500;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+        }
+        
+        .see-more-btn:hover {
+            background: #ffa500;
+            color: white;
+            transform: scale(1.05);
         }
         
         .no-games {
@@ -432,6 +465,13 @@ class TrackedGamesProvider {
         function openMainComponent() {
             vscode.postMessage({
                 command: 'openMainComponent'
+            });
+        }
+        
+        function openGame(url) {
+            vscode.postMessage({
+                command: 'openGame',
+                url: url
             });
         }
         
@@ -539,6 +579,16 @@ class TrackedGamesProvider {
                             
                             const gradientStyle = \`background: linear-gradient(90deg, \${leftColor}40 0%, rgba(255,255,255,0.05) 50%, \${rightColor}40 100%);\`;
                             
+                            // Generate game URL for "Game Stats" button
+                            const baseUrls = {
+                                'nfl': 'https://www.espn.com/nfl/game/_/gameId/',
+                                'nba': 'https://www.espn.com/nba/game/_/gameId/',
+                                'premierLeague': 'https://www.espn.com/soccer/match/_/gameId/',
+                                'nhl': 'https://www.espn.com/nhl/game/_/gameId/',
+                                'mlb': 'https://www.espn.com/mlb/game/_/gameId/'
+                            };
+                            const gameUrl = game.gameId ? \`\${baseUrls[trackedGame.sport]}\${game.gameId}\` : \`https://www.espn.com/search/results?q=\${encodeURIComponent(\`\${game.away.name} vs \${game.home.name}\`)}\`;
+                            
                             return \`
                                 <div class="game \${isLive ? 'live' : game.status === 'Final' || game.status === 'STATUS_FINAL' ? 'final' : ''}" style="\${gradientStyle}">
                                     <button class="stop-btn" onclick="stopTracking('\${trackedGame.id}')" title="Stop Tracking">×</button>
@@ -558,6 +608,9 @@ class TrackedGamesProvider {
                                             \${rightTeam.logo ? \`<div class="team-logo-fallback" style="display: none;">\${rightTeam.name.charAt(0)}</div>\` : ''}
                                             <div class="team-name">\${rightTeam.abbreviation || rightTeam.name}</div>
                                         </div>
+                                    </div>
+                                    <div class="game-buttons">
+                                        <button class="see-more-btn" onclick="openGame('\${gameUrl}')" title="Game Stats">Game Stats</button>
                                     </div>
                                 </div>
                             \`;
