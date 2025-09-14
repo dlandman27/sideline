@@ -1,9 +1,13 @@
 {
   "name": "sideline",
-  "displayName": "Sideline",
-  "description": "Keep track of your favorite sports teams without leaving VS Code",
-  "version": "0.0.5",
+  "displayName": "Sideline - Live Sports Scores",
+  "description": "Keep track of your favorite sports games without leaving VS Code",
+  "version": "0.0.7",
   "publisher": "dlandman27",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dlandman27/sideline.git"
+  },
   "icon": "sideline_logomark.png",
   "engines": {
     "vscode": "^1.74.0"
@@ -12,7 +16,7 @@
     "Other"
   ],
   "configuration": {
-    "title": "Sideline",
+    "title": "Sideline - Live Sports Scores",
     "properties": {
       "sideline.refreshInterval": {
         "type": "number",
@@ -32,12 +36,12 @@
     "commands": [
       {
         "command": "sideline.openPanel",
-        "title": "View Games",
+        "title": "View Live Sports Scores",
         "category": "Sideline"
       },
       {
         "command": "sideline.refresh",
-        "title": "Refresh",
+        "title": "Refresh Live Sports Scores",
         "category": "Sideline"
       },
       {
