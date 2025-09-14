@@ -565,6 +565,7 @@
     
     
     <script>
+        console.log('🚀 WEBVIEW SCRIPT LOADED!');
         const vscode = acquireVsCodeApi();
         
         function refreshData() {
@@ -909,7 +910,7 @@
                             <div class="game ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'live' : game.status === 'Final' || game.status === 'STATUS_FINAL' ? 'final' : ''}" style="${gradientStyle}">
                                 <div class="teams">
                                     <div class="team">
-                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
+                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><div class="team-logo-fallback" style="display: none;">${game.away.name.charAt(0)}</div>` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
                                         <div class="team-name">${game.away.abbreviation || game.away.name}</div>
                                     </div>
                                     <div class="game-center">
@@ -918,7 +919,7 @@
                                         <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? '' : game.status === 'STATUS_FINAL' ? 'Final' : game.status === 'STATUS_FULL_TIME' ? 'Full Time' : game.status === 'STATUS_SECOND_HALF' ? '2nd Half' : game.status === 'STATUS_FIRST_HALF' ? '1st Half' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? (game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : '') : ''}</div>
                                     </div>
                                     <div class="team">
-                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
+                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><div class="team-logo-fallback" style="display: none;">${game.home.name.charAt(0)}</div>` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
                                         <div class="team-name">${game.home.abbreviation || game.home.name}</div>
                                     </div>
                                 </div>
@@ -962,7 +963,7 @@
                             <div class="game ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'live' : game.status === 'Final' || game.status === 'STATUS_FINAL' ? 'final' : ''}" style="${gradientStyle}">
                                 <div class="teams">
                                     <div class="team">
-                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
+                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><div class="team-logo-fallback" style="display: none;">${game.away.name.charAt(0)}</div>` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
                                         <div class="team-name">${game.away.abbreviation || game.away.name}</div>
                                     </div>
                                     <div class="game-center">
@@ -971,7 +972,7 @@
                                         <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? '' : game.status === 'STATUS_FINAL' ? 'Final' : game.status === 'STATUS_FULL_TIME' ? 'Full Time' : game.status === 'STATUS_SECOND_HALF' ? '2nd Half' : game.status === 'STATUS_FIRST_HALF' ? '1st Half' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? (game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : '') : ''}</div>
                                     </div>
                                     <div class="team">
-                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
+                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><div class="team-logo-fallback" style="display: none;">${game.home.name.charAt(0)}</div>` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
                                         <div class="team-name">${game.home.abbreviation || game.home.name}</div>
                                     </div>
                                 </div>
@@ -1015,7 +1016,7 @@
                             <div class="game ${game.status === 'Live' ? 'live' : game.status === 'Full Time' ? 'final' : ''}" style="${gradientStyle}">
                                 <div class="teams">
                                     <div class="team">
-                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
+                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><div class="team-logo-fallback" style="display: none; font-size: 8px; word-break: break-all; line-height: 1.1;">${game.home.logo}</div>` : `<div class="team-logo-fallback" style="font-size: 8px; word-break: break-all; line-height: 1.1;">${game.home.logo || 'No URL'}</div>`}
                                         <div class="team-name">${game.home.abbreviation || game.home.name}</div>
                                     </div>
                                     <div class="game-center">
@@ -1024,7 +1025,7 @@
                                         <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? '' : game.status === 'STATUS_FINAL' ? 'Final' : game.status === 'STATUS_FULL_TIME' ? 'Full Time' : game.status === 'STATUS_SECOND_HALF' ? '2nd Half' : game.status === 'STATUS_FIRST_HALF' ? '1st Half' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? (game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : '') : ''}</div>
                                     </div>
                                     <div class="team">
-                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
+                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><div class="team-logo-fallback" style="display: none; font-size: 8px; word-break: break-all; line-height: 1.1;">${game.away.logo}</div>` : `<div class="team-logo-fallback" style="font-size: 8px; word-break: break-all; line-height: 1.1;">${game.away.logo || 'No URL'}</div>`}
                                         <div class="team-name">${game.away.abbreviation || game.away.name}</div>
                                     </div>
                                 </div>
@@ -1068,7 +1069,7 @@
                             <div class="game ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'live' : game.status === 'Final' || game.status === 'STATUS_FINAL' ? 'final' : ''}" style="${gradientStyle}">
                                 <div class="teams">
                                     <div class="team">
-                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
+                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><div class="team-logo-fallback" style="display: none;">${game.away.name.charAt(0)}</div>` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
                                         <div class="team-name">${game.away.abbreviation || game.away.name}</div>
                                     </div>
                                     <div class="game-center">
@@ -1077,7 +1078,7 @@
                                         <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? '' : game.status === 'STATUS_FINAL' ? 'Final' : game.status === 'STATUS_FULL_TIME' ? 'Full Time' : game.status === 'STATUS_SECOND_HALF' ? '2nd Half' : game.status === 'STATUS_FIRST_HALF' ? '1st Half' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? (game.quarter ? ` - ${game.quarter}` : game.minute ? ` - ${game.minute}` : '') : ''}</div>
                                     </div>
                                     <div class="team">
-                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
+                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><div class="team-logo-fallback" style="display: none;">${game.home.name.charAt(0)}</div>` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
                                         <div class="team-name">${game.home.abbreviation || game.home.name}</div>
                                     </div>
                                 </div>
@@ -1121,7 +1122,7 @@
                             <div class="game ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'live' : game.status === 'Final' || game.status === 'STATUS_FINAL' ? 'final' : ''}" style="${gradientStyle}">
                                 <div class="teams">
                                     <div class="team">
-                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
+                                        ${game.away.logo ? `<img src="${game.away.logo}" alt="${game.away.name}" class="team-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><div class="team-logo-fallback" style="display: none;">${game.away.name.charAt(0)}</div>` : `<div class="team-logo-fallback">${game.away.name.charAt(0)}</div>`}
                                         <div class="team-name">${game.away.abbreviation || game.away.name}</div>
                                     </div>
                                     <div class="game-center">
@@ -1130,7 +1131,7 @@
                                         <div class="game-status-center">${game.status === 'STATUS_SCHEDULED' ? '' : game.status === 'STATUS_FINAL' ? 'Final' : game.status === 'STATUS_FULL_TIME' ? 'Full Time' : game.status === 'STATUS_SECOND_HALF' ? '2nd Half' : game.status === 'STATUS_FIRST_HALF' ? '1st Half' : (game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? 'Live' : game.status} ${(game.status && (game.status.includes('LIVE') || game.status.includes('IN_PROGRESS') || game.status.includes('SECOND_HALF') || game.status.includes('FIRST_HALF') || game.status === 'Live')) ? (game.quarter || game.minute ? ` - ${formatBaseballInning(game.quarter, game.minute)}` : '') : ''}</div>
                                     </div>
                                     <div class="team">
-                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'">` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
+                                        ${game.home.logo ? `<img src="${game.home.logo}" alt="${game.home.name}" class="team-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"><div class="team-logo-fallback" style="display: none;">${game.home.name.charAt(0)}</div>` : `<div class="team-logo-fallback">${game.home.name.charAt(0)}</div>`}
                                         <div class="team-name">${game.home.abbreviation || game.home.name}</div>
                                     </div>
                                 </div>
@@ -1171,6 +1172,48 @@
         
         // Initial data load
         refreshData();
+        
+        // Debug function to print Premier League team URLs only
+        function debugPremierLeagueUrls(data) {
+            console.log('🔍 DEBUG: Function called!');
+            console.log('🔍 Data received:', data);
+            console.log('🔍 Data type:', typeof data);
+            console.log('🔍 Data keys:', data ? Object.keys(data) : 'No data');
+            
+            if (data) {
+                console.log('🔍 Has premierLeague?', !!data.premierLeague);
+                if (data.premierLeague) {
+                    console.log('🔍 Premier League keys:', Object.keys(data.premierLeague));
+                    console.log('🔍 Has games?', !!data.premierLeague.games);
+                    if (data.premierLeague.games) {
+                        console.log('🔍 Number of games:', data.premierLeague.games.length);
+                    }
+                }
+            }
+            
+            if (data && data.premierLeague && data.premierLeague.games) {
+                console.log('=== Premier League URLs ONLY ===');
+                console.log('Number of Premier League games:', data.premierLeague.games.length);
+                data.premierLeague.games.forEach((game, index) => {
+                    console.log(`Game ${index + 1}:`);
+                    console.log(`  Home: ${game.home.name} (${game.home.abbreviation}) - ${game.home.logo || 'No URL'}`);
+                    console.log(`  Away: ${game.away.name} (${game.away.abbreviation}) - ${game.away.logo || 'No URL'}`);
+                });
+                console.log('=== End Premier League ===');
+            } else {
+                console.log('❌ DEBUG: No Premier League data found');
+                if (data) {
+                    console.log('Available sports:', Object.keys(data));
+                }
+            }
+        }
+        
+        // Override renderData to include debug
+        const originalRenderData = renderData;
+        renderData = function(data, skipFiltering = false) {
+            debugPremierLeagueUrls(data);
+            return originalRenderData(data, skipFiltering);
+        };
     </script>
 </body>
 </html>

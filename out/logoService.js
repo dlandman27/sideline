@@ -7,6 +7,13 @@ exports.LogoService = void 0;
 class LogoService {
     static getLogo(teamAbbreviation, sport) {
         const abbreviation = teamAbbreviation.toUpperCase();
+        // Debug logging for Premier League
+        if (sport === 'premierLeague') {
+            console.log(`LogoService: Looking for ${abbreviation} in Premier League logos`);
+            const logo = this.PREMIER_LEAGUE_LOGOS[abbreviation];
+            console.log(`LogoService: Found logo for ${abbreviation}: ${logo || 'NOT FOUND'}`);
+            return logo;
+        }
         switch (sport) {
             case 'nfl':
                 return this.NFL_LOGOS[abbreviation];
@@ -16,8 +23,6 @@ class LogoService {
                 return this.MLB_LOGOS[abbreviation];
             case 'nhl':
                 return this.NHL_LOGOS[abbreviation];
-            case 'premierLeague':
-                return this.PREMIER_LEAGUE_LOGOS[abbreviation];
             default:
                 return undefined;
         }
@@ -176,13 +181,16 @@ LogoService.PREMIER_LEAGUE_LOGOS = {
     'BOU': `${_a.LOGO_BASE_URL}/soccer/500/349.png`,
     'BRE': `${_a.LOGO_BASE_URL}/soccer/500/361.png`,
     'BHA': `${_a.LOGO_BASE_URL}/soccer/500/331.png`,
+    'BUR': `${_a.LOGO_BASE_URL}/soccer/500/379.png`,
     'CHE': `${_a.LOGO_BASE_URL}/soccer/500/363.png`,
     'CRY': `${_a.LOGO_BASE_URL}/soccer/500/354.png`,
     'EVE': `${_a.LOGO_BASE_URL}/soccer/500/368.png`,
     'FUL': `${_a.LOGO_BASE_URL}/soccer/500/370.png`,
     'LEI': `${_a.LOGO_BASE_URL}/soccer/500/375.png`,
     'LIV': `${_a.LOGO_BASE_URL}/soccer/500/364.png`,
+    'MAN': `${_a.LOGO_BASE_URL}/soccer/500/360.png`,
     'MCI': `${_a.LOGO_BASE_URL}/soccer/500/382.png`,
+    'MNC': `${_a.LOGO_BASE_URL}/soccer/500/382.png`,
     'MUN': `${_a.LOGO_BASE_URL}/soccer/500/360.png`,
     'NEW': `${_a.LOGO_BASE_URL}/soccer/500/361.png`,
     'NFO': `${_a.LOGO_BASE_URL}/soccer/500/351.png`,

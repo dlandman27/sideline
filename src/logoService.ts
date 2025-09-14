@@ -151,14 +151,17 @@ export class LogoService {
         'BOU': `${this.LOGO_BASE_URL}/soccer/500/349.png`, // Bournemouth
         'BRE': `${this.LOGO_BASE_URL}/soccer/500/361.png`, // Brentford
         'BHA': `${this.LOGO_BASE_URL}/soccer/500/331.png`, // Brighton
+        'BUR': `${this.LOGO_BASE_URL}/soccer/500/379.png`, // Burnley
         'CHE': `${this.LOGO_BASE_URL}/soccer/500/363.png`, // Chelsea
         'CRY': `${this.LOGO_BASE_URL}/soccer/500/354.png`, // Crystal Palace
         'EVE': `${this.LOGO_BASE_URL}/soccer/500/368.png`, // Everton
         'FUL': `${this.LOGO_BASE_URL}/soccer/500/370.png`, // Fulham
         'LEI': `${this.LOGO_BASE_URL}/soccer/500/375.png`, // Leicester
         'LIV': `${this.LOGO_BASE_URL}/soccer/500/364.png`, // Liverpool
-        'MCI': `${this.LOGO_BASE_URL}/soccer/500/382.png`, // Manchester City
-        'MUN': `${this.LOGO_BASE_URL}/soccer/500/360.png`, // Manchester United
+        'MAN': `${this.LOGO_BASE_URL}/soccer/500/360.png`, // Manchester United (ESPN API uses MAN)
+        'MCI': `${this.LOGO_BASE_URL}/soccer/500/382.png`, // Manchester City (legacy)
+        'MNC': `${this.LOGO_BASE_URL}/soccer/500/382.png`, // Manchester City (ESPN API uses MNC)
+        'MUN': `${this.LOGO_BASE_URL}/soccer/500/360.png`, // Manchester United (legacy)
         'NEW': `${this.LOGO_BASE_URL}/soccer/500/361.png`, // Newcastle
         'NFO': `${this.LOGO_BASE_URL}/soccer/500/351.png`, // Nottingham Forest
         'SHU': `${this.LOGO_BASE_URL}/soccer/500/376.png`, // Sheffield United
@@ -170,6 +173,14 @@ export class LogoService {
     static getLogo(teamAbbreviation: string, sport: 'nfl' | 'nba' | 'mlb' | 'nhl' | 'premierLeague'): string | undefined {
         const abbreviation = teamAbbreviation.toUpperCase();
         
+        // Debug logging for Premier League
+        if (sport === 'premierLeague') {
+            console.log(`LogoService: Looking for ${abbreviation} in Premier League logos`);
+            const logo = this.PREMIER_LEAGUE_LOGOS[abbreviation];
+            console.log(`LogoService: Found logo for ${abbreviation}: ${logo || 'NOT FOUND'}`);
+            return logo;
+        }
+        
         switch (sport) {
             case 'nfl':
                 return this.NFL_LOGOS[abbreviation];
@@ -179,8 +190,6 @@ export class LogoService {
                 return this.MLB_LOGOS[abbreviation];
             case 'nhl':
                 return this.NHL_LOGOS[abbreviation];
-            case 'premierLeague':
-                return this.PREMIER_LEAGUE_LOGOS[abbreviation];
             default:
                 return undefined;
         }

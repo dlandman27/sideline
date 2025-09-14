@@ -407,7 +407,16 @@ export class SportsApiService {
     // Helper method to enhance team data with logos and colors
     private enhanceTeamData(team: any, sport: 'nfl' | 'nba' | 'mlb' | 'nhl' | 'premierLeague'): any {
         const abbreviation = team.team?.abbreviation || team.name;
-        const logo = this.getTeamLogo(team) || LogoService.getLogo(abbreviation, sport);
+        
+        // Debug logging for Premier League
+        if (sport === 'premierLeague') {
+            console.log(`SportsApi: Enhancing team data for ${team.team?.displayName || team.team?.name || team.name}`);
+            console.log(`SportsApi: Team abbreviation: ${abbreviation}`);
+            console.log(`SportsApi: Team object:`, team);
+        }
+        
+        // Prioritize LogoService over ESPN API logos for better reliability
+        const logo = LogoService.getLogo(abbreviation, sport) || this.getTeamLogo(team);
         const colors = TeamColorService.getTeamColors(abbreviation, sport) || TeamColorService.getDefaultColors();
         
         return {

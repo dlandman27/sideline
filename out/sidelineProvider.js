@@ -101,7 +101,7 @@ class SidelineProvider {
                     game.isTailing = trackedGameIds.has(gameId);
                 });
             }
-            console.log('Fetched data:', JSON.stringify(data, null, 2)); // Debug log
+            // console.log('Fetched data:', JSON.stringify(data, null, 2)); // Debug log - commented out
             this.panel.webview.postMessage({
                 command: 'updateData',
                 data: data

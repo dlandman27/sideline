@@ -155,14 +155,17 @@ export class TeamColorService {
         'BOU': { primary: '#DA020E', secondary: '#000000', text: '#FFFFFF' }, // Bournemouth
         'BRE': { primary: '#D20000', secondary: '#FFFFFF', text: '#FFFFFF' }, // Brentford
         'BHA': { primary: '#0057B8', secondary: '#FFFFFF', text: '#FFFFFF' }, // Brighton
+        'BUR': { primary: '#6C1D45', secondary: '#99D6EA', text: '#FFFFFF' }, // Burnley
         'CHE': { primary: '#034694', secondary: '#FFFFFF', text: '#FFFFFF' }, // Chelsea
         'CRY': { primary: '#1B458F', secondary: '#C4122E', text: '#FFFFFF' }, // Crystal Palace
         'EVE': { primary: '#003399', secondary: '#FFFFFF', text: '#FFFFFF' }, // Everton
         'FUL': { primary: '#000000', secondary: '#FFFFFF', text: '#FFFFFF' }, // Fulham
         'LEI': { primary: '#003090', secondary: '#FDBE11', text: '#FFFFFF' }, // Leicester
         'LIV': { primary: '#C8102E', secondary: '#FFFFFF', text: '#FFFFFF' }, // Liverpool
-        'MCI': { primary: '#6CABDD', secondary: '#FFFFFF', text: '#000000' }, // Manchester City
-        'MUN': { primary: '#DA020E', secondary: '#FBE122', text: '#FFFFFF' }, // Manchester United
+        'MAN': { primary: '#DA020E', secondary: '#FBE122', text: '#FFFFFF' }, // Manchester United (ESPN API uses MAN)
+        'MCI': { primary: '#6CABDD', secondary: '#FFFFFF', text: '#000000' }, // Manchester City (legacy)
+        'MNC': { primary: '#6CABDD', secondary: '#FFFFFF', text: '#000000' }, // Manchester City (ESPN API uses MNC)
+        'MUN': { primary: '#DA020E', secondary: '#FBE122', text: '#FFFFFF' }, // Manchester United (legacy)
         'NEW': { primary: '#241F20', secondary: '#FFFFFF', text: '#FFFFFF' }, // Newcastle
         'NFO': { primary: '#DD0000', secondary: '#FFFFFF', text: '#FFFFFF' }, // Nottingham Forest
         'SHU': { primary: '#EE2737', secondary: '#FFFFFF', text: '#FFFFFF' }, // Sheffield United
