@@ -2,7 +2,7 @@
   "name": "sideline",
   "displayName": "Sideline",
   "description": "Keep track of your favorite sports teams without leaving VS Code",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "publisher": "dlandman27",
   "icon": "src/sideline_logomark.png",
   "engines": {
