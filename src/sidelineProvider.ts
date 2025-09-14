@@ -160,13 +160,28 @@ export class SidelineProvider implements vscode.TreeDataProvider<vscode.TreeItem
 
     private getWebviewContent(): string {
         try {
-            // Read the inline HTML file
-            const htmlPath = path.join(this.extensionUri.fsPath, 'src', 'webview.html');
-            const fs = require('fs');
+            // Try different possible paths for the HTML file
+            const possiblePaths = [
+                path.join(this.extensionUri.fsPath, 'src', 'webview.html'),
+                path.join(this.extensionUri.fsPath, 'out', 'src', 'webview.html'),
+                path.join(this.extensionUri.fsPath, 'webview.html')
+            ];
             
-            // Check if file exists first
-            if (!fs.existsSync(htmlPath)) {
-                console.error('Webview HTML file not found at:', htmlPath);
+            const fs = require('fs');
+            let htmlPath = null;
+            
+            // Find the correct path
+            for (const testPath of possiblePaths) {
+                if (fs.existsSync(testPath)) {
+                    htmlPath = testPath;
+                    console.log('Found webview HTML at:', htmlPath);
+                    break;
+                }
+            }
+            
+            if (!htmlPath) {
+                console.error('Webview HTML file not found. Tried paths:', possiblePaths);
+                console.error('Extension URI:', this.extensionUri.fsPath);
                 return this.getFallbackHtml();
             }
             

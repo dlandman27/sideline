@@ -130,12 +130,25 @@ class SidelineProvider {
     }
     getWebviewContent() {
         try {
-            // Read the inline HTML file
-            const htmlPath = path.join(this.extensionUri.fsPath, 'src', 'webview.html');
+            // Try different possible paths for the HTML file
+            const possiblePaths = [
+                path.join(this.extensionUri.fsPath, 'src', 'webview.html'),
+                path.join(this.extensionUri.fsPath, 'out', 'src', 'webview.html'),
+                path.join(this.extensionUri.fsPath, 'webview.html')
+            ];
             const fs = require('fs');
-            // Check if file exists first
-            if (!fs.existsSync(htmlPath)) {
-                console.error('Webview HTML file not found at:', htmlPath);
+            let htmlPath = null;
+            // Find the correct path
+            for (const testPath of possiblePaths) {
+                if (fs.existsSync(testPath)) {
+                    htmlPath = testPath;
+                    console.log('Found webview HTML at:', htmlPath);
+                    break;
+                }
+            }
+            if (!htmlPath) {
+                console.error('Webview HTML file not found. Tried paths:', possiblePaths);
+                console.error('Extension URI:', this.extensionUri.fsPath);
                 return this.getFallbackHtml();
             }
             let html = fs.readFileSync(htmlPath, 'utf8');
