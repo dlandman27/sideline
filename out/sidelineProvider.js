@@ -64,6 +64,9 @@ class SidelineProvider {
                     case 'tailGame':
                         this.tailGame(message.gameData);
                         return;
+                    case 'openUrl':
+                        this.openUrlInBrowser(message.url);
+                        return;
                 }
             }, undefined, []);
         }
@@ -119,6 +122,9 @@ class SidelineProvider {
     }
     async openGameInBrowser(gameUrl) {
         vscode.env.openExternal(vscode.Uri.parse(gameUrl));
+    }
+    openUrlInBrowser(url) {
+        vscode.env.openExternal(vscode.Uri.parse(url));
     }
     async tailGame(gameData) {
         vscode.commands.executeCommand('sideline.tailGame', gameData);

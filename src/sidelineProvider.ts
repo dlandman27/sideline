@@ -82,6 +82,9 @@ export class SidelineProvider implements vscode.TreeDataProvider<vscode.TreeItem
                         case 'tailGame':
                             this.tailGame(message.gameData);
                             return;
+                        case 'openUrl':
+                            this.openUrlInBrowser(message.url);
+                            return;
                     }
                 },
                 undefined,
@@ -146,6 +149,10 @@ export class SidelineProvider implements vscode.TreeDataProvider<vscode.TreeItem
 
     private async openGameInBrowser(gameUrl: string): Promise<void> {
         vscode.env.openExternal(vscode.Uri.parse(gameUrl));
+    }
+    
+    private openUrlInBrowser(url: string): void {
+        vscode.env.openExternal(vscode.Uri.parse(url));
     }
 
     private async tailGame(gameData: any): Promise<void> {

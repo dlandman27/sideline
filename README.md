@@ -4,6 +4,20 @@
 <div align="center">
   <h1>🏈 The Ultimate Sports Companion for Developers 🏈</h1>
   <p><strong>Never miss a game while you code. Never miss a deadline while you watch.</strong></p>
+  
+  <br>
+  
+  <h3>🐛 Found a Bug? 💡 Have an Idea?</h3>
+  <p><strong>Help make Sideline better! Report issues, suggest features, or share your feedback.</strong></p>
+  
+  <a href="https://github.com/yourusername/sideline/issues/new" target="_blank">
+    <img src="https://img.shields.io/badge/Report%20Issue-Open%20Issue-red?style=for-the-badge&logo=github" alt="Report Issue">
+  </a>
+  <a href="https://github.com/yourusername/sideline/issues/new?template=feature_request.md" target="_blank">
+    <img src="https://img.shields.io/badge/Suggest%20Feature-Request%20Feature-blue?style=for-the-badge&logo=lightbulb" alt="Suggest Feature">
+  </a>
+  
+  <br><br>
 </div>
 
 <div align="center">
@@ -281,6 +295,19 @@ This project is licensed under the **MIT License**.
   <img src="https://img.shields.io/badge/Download-Now-brightgreen?style=for-the-badge&logo=download" alt="Download Now">
   
   <br><br>
+  
+  ## 🐛 Known Issues
+  
+  | Issue | Status | Description |
+  |-------|--------|-------------|
+  | Premier League Logos | ✅ Fixed | Some team logos weren't displaying due to abbreviation mismatches |
+  | VSIX Packaging | ✅ Fixed | Webview wasn't loading in packaged extension |
+  | Team Colors | ✅ Fixed | Manchester United and City colors not showing |
+  
+  ### Recent Fixes
+  - **v0.0.1**: Fixed Premier League team abbreviation mappings (MAN, MNC, BUR)
+  - **v0.0.1**: Fixed VSIX packaging to include webview.html file
+  - **v0.0.1**: Added proper team color mappings for all Premier League teams
   
   <p><em>Happy coding and may your teams always win! 🚀</em></p>
 </div>

@@ -379,7 +379,7 @@ class TrackedGamesProvider {
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, #ffa500 0%, #1a1a1a 25%, #1a1a1a 75%, #ffa500 100%);
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.3) 0%, #1a1a1a 25%, #1a1a1a 75%, rgba(255, 165, 0, 0.3) 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -396,7 +396,7 @@ class TrackedGamesProvider {
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, #ffa500 0%, #1a1a1a 25%, #1a1a1a 75%, #ffa500 100%);
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.3) 0%, #1a1a1a 25%, #1a1a1a 75%, rgba(255, 165, 0, 0.3) 100%);
             filter: blur(40px);
             opacity: 0.8;
             z-index: -1;
@@ -412,9 +412,9 @@ class TrackedGamesProvider {
         
         .no-games-text {
             color: #ffffff;
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 500;
-            margin-bottom: 25px;
+            margin-bottom: 10px;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
         
@@ -422,11 +422,11 @@ class TrackedGamesProvider {
             background: rgba(255, 165, 0, 0.2);
             color: #ffa500;
             border: 1px solid #ffa500;
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 6px 12px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
-            font-size: 12px;
+            font-size: 10px;
             transition: all 0.2s ease;
             text-decoration: none;
             display: inline-block;
@@ -454,7 +454,6 @@ class TrackedGamesProvider {
     
     <div id="content">
         <div class="no-games">
-            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9Ijc1IiB2aWV3Qm94PSIwIDAgMzAwIDc1IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8dGV4dCB4PSIxNTAiIHk9IjQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkltcGFjdCwgQXJpYWwgQmxhY2ssIEhlbHZldGljYSBOZXVlLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQyIiBmb250LXdlaWdodD0iNjAwIiBsZXR0ZXItc3BhY2luZz0iMnB4Ij5TSURFTElORTwvdGV4dD4KPC9zdmc+" alt="SIDELINE" class="no-games-logo">
             <div class="no-games-text">Loading tracked games...</div>
         </div>
     </div>
@@ -539,7 +538,7 @@ class TrackedGamesProvider {
             const content = document.getElementById('content');
             
             if (!trackedGames || trackedGames.length === 0) {
-                content.innerHTML = '<div class="no-games"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9Ijc1IiB2aWV3Qm94PSIwIDAgMzAwIDc1IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8dGV4dCB4PSIxNTAiIHk9IjQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkltcGFjdCwgQXJpYWwgQmxhY2ssIEhlbHZldGljYSBOZXVlLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQyIiBmb250LXdlaWdodD0iNjAwIiBsZXR0ZXItc3BhY2luZz0iMnB4Ij5TSURFTElORTwvdGV4dD4KPC9zdmc+" alt="SIDELINE" class="no-games-logo"><div class="no-games-text">No games being tailed</div><button class="no-games-btn" onclick="openMainComponent()">View All Games</button></div>';
+                content.innerHTML = '<div class="no-games"><div class="no-games-text">No games being tailed</div><button class="no-games-btn" onclick="openMainComponent()">View All Games</button></div>';
                 return;
             }
             

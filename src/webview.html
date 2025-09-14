@@ -519,12 +519,67 @@
             color: #ffa500;
         }
         
+        .feedback-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            margin-top: 0;
+        }
+        
+        .feedback-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .feedback-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .feedback-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .bug-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            color: #fca5a5;
+        }
+        
+        .idea-btn:hover {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+            color: #86efac;
+        }
+        
         
     </style>
 </head>
 <body>
     <div class="header">
         <img src="SIDELINE.png" alt="Sideline" class="logo">
+    </div>
+    
+    <div class="feedback-section">
+        <div class="feedback-buttons">
+            <button class="feedback-btn bug-btn" onclick="reportIssue()" title="Report a bug or issue">
+                Report Issue
+            </button>
+            <button class="feedback-btn idea-btn" onclick="suggestIdea()" title="Suggest a new feature or improvement">
+                💡 Suggest Idea
+            </button>
+        </div>
     </div>
     
     <div class="controls">
@@ -691,6 +746,60 @@
             if (currentData) {
                 renderData(currentData, true);
             }
+        }
+        
+        function reportIssue() {
+            const issueUrl = 'https://github.com/dlandman27/sideline/issues/new?template=bug_report.md&title=Bug%20Report%3A%20';
+            const issueTitle = encodeURIComponent('Bug Report: ');
+            const issueBody = encodeURIComponent(`**Describe the bug**
+A clear and concise description of what the bug is.
+
+**To Reproduce**
+Steps to reproduce the behavior:
+1. Go to '...'
+2. Click on '....'
+3. Scroll down to '....'
+4. See error
+
+**Expected behavior**
+A clear and concise description of what you expected to happen.
+
+**Screenshots**
+If applicable, add screenshots to help explain your problem.
+
+**Environment:**
+- OS: [e.g. Windows, macOS, Linux]
+- VS Code Version: [e.g. 1.74.0]
+- Sideline Version: [e.g. 0.0.1]
+
+**Additional context**
+Add any other context about the problem here.`);
+            
+            vscode.postMessage({
+                command: 'openUrl',
+                url: issueUrl + issueTitle + '&body=' + issueBody
+            });
+        }
+        
+        function suggestIdea() {
+            const issueUrl = 'https://github.com/dlandman27/sideline/issues/new?template=feature_request.md&title=Feature%20Request%3A%20';
+            const issueTitle = encodeURIComponent('Feature Request: ');
+            const issueBody = encodeURIComponent(`**Is your feature request related to a problem? Please describe.**
+A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+
+**Describe the solution you'd like**
+A clear and concise description of what you want to happen.
+
+**Describe alternatives you've considered**
+A clear and concise description of any alternative solutions or features you've considered.
+
+**Additional context**
+Add any other context or screenshots about the feature request here.`);
+            
+            vscode.postMessage({
+                command: 'openUrl',
+                url: issueUrl + issueTitle + '&body=' + issueBody
+            });
         }
         
         function toggleSportSection(sportKey) {
