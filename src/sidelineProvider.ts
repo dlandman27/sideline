@@ -40,9 +40,14 @@ export class SidelineProvider implements vscode.TreeDataProvider<vscode.TreeItem
     }
 
     openPanel(): void {
+        console.log('Opening Sideline panel...');
+        console.log('Extension URI:', this.extensionUri.fsPath);
+        
         if (this.panel) {
+            console.log('Panel already exists, revealing...');
             this.panel.reveal(vscode.ViewColumn.One);
         } else {
+            console.log('Creating new webview panel...');
             this.panel = vscode.window.createWebviewPanel(
                 'sideline',
                 'Sideline - Sports Stats',
@@ -54,6 +59,7 @@ export class SidelineProvider implements vscode.TreeDataProvider<vscode.TreeItem
                 }
             );
 
+            console.log('Setting webview HTML content...');
             this.panel.webview.html = this.getWebviewContent();
 
             this.panel.onDidDispose(() => {
@@ -153,15 +159,48 @@ export class SidelineProvider implements vscode.TreeDataProvider<vscode.TreeItem
     }
 
     private getWebviewContent(): string {
-        // Read the inline HTML file
-        const htmlPath = path.join(this.extensionUri.fsPath, 'src', 'webview.html');
-        const fs = require('fs');
-        let html = fs.readFileSync(htmlPath, 'utf8');
-        
-        // Replace the image source with the proper webview URI
-        const logoUri = this.panel?.webview.asWebviewUri(vscode.Uri.joinPath(this.extensionUri, 'src', 'SIDELINE.png'));
-        html = html.replace('src="SIDELINE.png"', `src="${logoUri}"`);
-        
-        return html;
+        try {
+            // Read the inline HTML file
+            const htmlPath = path.join(this.extensionUri.fsPath, 'src', 'webview.html');
+            const fs = require('fs');
+            
+            // Check if file exists first
+            if (!fs.existsSync(htmlPath)) {
+                console.error('Webview HTML file not found at:', htmlPath);
+                return this.getFallbackHtml();
+            }
+            
+            let html = fs.readFileSync(htmlPath, 'utf8');
+            
+            // Replace the image source with the proper webview URI
+            const logoUri = this.panel?.webview.asWebviewUri(vscode.Uri.joinPath(this.extensionUri, 'src', 'SIDELINE.png'));
+            html = html.replace('src="SIDELINE.png"', `src="${logoUri}"`);
+            
+            return html;
+        } catch (error) {
+            console.error('Error loading webview content:', error);
+            return this.getFallbackHtml();
+        }
+    }
+    
+    private getFallbackHtml(): string {
+        return `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Sideline</title>
+        </head>
+        <body>
+            <h1>Sideline - Sports Stats</h1>
+            <p>Loading sports data...</p>
+            <p>If this page doesn't load properly, please check the console for errors.</p>
+            <script>
+                console.log('Fallback webview loaded');
+                const vscode = acquireVsCodeApi();
+                vscode.postMessage({ command: 'refresh' });
+            </script>
+        </body>
+        </html>`;
     }
 }
