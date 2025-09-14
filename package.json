@@ -4,7 +4,7 @@
   "description": "Keep track of your favorite sports teams without leaving VS Code",
   "version": "0.0.4",
   "publisher": "dlandman27",
-  "icon": "SIDELINE.png",
+  "icon": "src/sideline_logomark.png",
   "engines": {
     "vscode": "^1.74.0"
   },

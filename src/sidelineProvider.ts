@@ -195,8 +195,8 @@ export class SidelineProvider implements vscode.TreeDataProvider<vscode.TreeItem
             let html = fs.readFileSync(htmlPath, 'utf8');
             
             // Replace the image source with the proper webview URI
-            const logoUri = this.panel?.webview.asWebviewUri(vscode.Uri.joinPath(this.extensionUri, 'src', 'SIDELINE.png'));
-            html = html.replace('src="SIDELINE.png"', `src="${logoUri}"`);
+            const logoUri = this.panel?.webview.asWebviewUri(vscode.Uri.joinPath(this.extensionUri, 'src', 'sideline_banner.png'));
+            html = html.replace('src="sideline_banner.png"', `src="${logoUri}"`);
             
             return html;
         } catch (error) {
