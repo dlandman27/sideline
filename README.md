@@ -1,23 +1,34 @@
-# Sideline - VS Code Sports Extension
-
+<div align="center">
+  <img src="src/sideline_banner.png" alt="Sideline Banner" width="600" style="border-radius: 8px;">
+</div>
 
 <div align="center">
-  <h1>🏈 The Ultimate Sports Companion for Developers 🏈</h1>
+  <h1>The Ultimate Sports Companion for Developers</h1>
   <p><strong>Never miss a game while you code. Never miss a deadline while you watch.</strong></p>
   
+  <div style="overflow-x: hidden; white-space: nowrap; padding: 20px 0; margin: 20px 0;">
+    <div style="display: inline-block; animation: scroll 20s linear infinite;">
+      <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nfl.png" alt="NFL" style="height: 60px; margin: 0 30px; vertical-align: middle;">
+      <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nba.png" alt="NBA" style="height: 60px; margin: 0 30px; vertical-align: middle;">
+      <img src="https://cdn.brandfetch.io/id3ei9Uwhu/w/177/h/224/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&t=1737356858593" alt="Premier League" style="height: 60px; margin: 0 30px; vertical-align: middle;">
+      <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nhl.png" alt="NHL" style="height: 60px; margin: 0 30px; vertical-align: middle;">
+      <img src="https://a.espncdn.com/i/teamlogos/leagues/500/mlb.png" alt="MLB" style="height: 60px; margin: 0 30px; vertical-align: middle;">
+      <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nfl.png" alt="NFL" style="height: 60px; margin: 0 30px; vertical-align: middle;">
+      <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nba.png" alt="NBA" style="height: 60px; margin: 0 30px; vertical-align: middle;">
+      <img src="https://cdn.brandfetch.io/id3ei9Uwhu/w/177/h/224/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&t=1737356858593" alt="Premier League" style="height: 60px; margin: 0 30px; vertical-align: middle;">
+      <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nhl.png" alt="NHL" style="height: 60px; margin: 0 30px; vertical-align: middle;">
+      <img src="https://a.espncdn.com/i/teamlogos/leagues/500/mlb.png" alt="MLB" style="height: 60px; margin: 0 30px; vertical-align: middle;">
+    </div>
+  </div>
+  
+  <style>
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+  </style>
+  
   <br>
-  
-  <h3>🐛 Found a Bug? 💡 Have an Idea?</h3>
-  <p><strong>Help make Sideline better! Report issues, suggest features, or share your feedback.</strong></p>
-  
-  <a href="https://github.com/yourusername/sideline/issues/new" target="_blank">
-    <img src="https://img.shields.io/badge/Report%20Issue-Open%20Issue-red?style=for-the-badge&logo=github" alt="Report Issue">
-  </a>
-  <a href="https://github.com/yourusername/sideline/issues/new?template=feature_request.md" target="_blank">
-    <img src="https://img.shields.io/badge/Suggest%20Feature-Request%20Feature-blue?style=for-the-badge&logo=lightbulb" alt="Suggest Feature">
-  </a>
-  
-  <br><br>
 </div>
 
 <div align="center">
@@ -26,9 +37,7 @@
   <img src="https://img.shields.io/badge/Real%20Time-Notifications-orange?style=for-the-badge&logo=bell" alt="Real Time">
 </div>
 
----
-
-## 🎯 What is Sideline?
+## <img src="src/sideline_logomark.png" alt="Sideline" style="height: 24px; vertical-align: middle; margin-right: 8px; border-radius: 6px;">What is Sideline?
 
 Sideline transforms VS Code into your personal sports command center. Whether you're debugging code or debugging your fantasy team, Sideline keeps you connected to the games that matter most.
 
@@ -38,52 +47,70 @@ Sideline transforms VS Code into your personal sports command center. Whether yo
 
 ---
 
-## ✨ Features That Will Blow Your Mind
+<div style="display: flex; align-items: center; gap: 40px; margin: 40px 0;">
+  <div style="flex: 1;">
+    <h3 style="color: #ffffff; margin-bottom: 20px; font-size: 24px;">Tail Your Games While You Code</h3>
+    <p style="color: #a0a0a0; font-size: 16px; line-height: 1.6; margin-bottom: 16px;">
+      Choose any game to "<span style="color: #ffa500;">tail</span>" and it will appear in your VS Code sidepanel under "Sidepanel", giving you instant access to live scores while you code. Your <span style="color: #ffa500;">tailed</span> games are automatically organized by sport for easy navigation.
+    </p>
+    <ul style="color: #a0a0a0; font-size: 14px; line-height: 1.8; margin-left: -10px;">
+      <li>🎯 <strong>Choose Games to Tail</strong> - Click "Tail Game" on any live or upcoming match</li>
+      <li>📱 <strong>View in Sidepanel</strong> - Tailed games appear in your VS Code sidebar</li>
+      <li>🏈 <strong>Organized by Sport</strong> - Games are sorted by NFL, NBA, Premier League, NHL, MLB</li>
+      <li>⚡ <strong>Live Updates</strong> - Scores refresh automatically while you code</li>
+      <li>🔔 <strong>Smart Notifications</strong> - Get alerts only when scores change</li>
+    </ul>
+  </div>
+  <div style="flex: 1; text-align: center; flex-shrink: 0;" class="sidepanel-image">
+    <img src="src/sidepanel.png" alt="Sideline Side Panel" style="max-width: 80%; height: auto; border-radius: 12px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+  </div>
+</div>
 
-### 🎮 **Live Game Tracking**
-- **Tail any game** with a single click
-- **Real-time score updates** delivered to your editor
-- **Smart notifications** only when scores change
-- **Persistent tracking** across VS Code sessions
-
-### 🔍 **Intelligent Discovery**
-- **Smart filtering** by Live, Completed, Upcoming, or Tailed games
-- **Lightning-fast search** by team names or abbreviations
-- **Collapsible sport sections** for organized browsing
-- **Game count indicators** for each sport
-
-### 🎨 **Beautiful, Native UI**
-- **VS Code-themed interface** that feels like home
-- **Team colors and logos** for instant recognition
-- **Smooth animations** and transitions
-- **Responsive design** that works in any panel size
-
-### 📱 **Multiple Views**
-- **Main Discovery Panel** - Browse all games and discover new ones
-- **Sidebar Widgets** - Quick access to your tailed games
-- **Dual-location support** - Available in main sidebar and explorer sections
-
-### ⚡ **Performance & Reliability**
-- **Configurable refresh intervals** (10-300 seconds)
-- **Auto-refresh** with smart update detection
-- **Error handling** and graceful fallbacks
-- **Lightweight** - won't slow down your coding
+<style>
+@media (max-width: 768px) {
+  .sidepanel-image {
+    display: none !important;
+  }
+  .dashboard-image {
+    display: none !important;
+  }
+}
+</style>
 
 ---
 
+<div style="display: flex; align-items: center; gap: 40px; margin: 40px 0;">
+  <div style="flex: 1; text-align: center; flex-shrink: 0;" class="dashboard-image">
+    <img src="src/sort_by.png" alt="Sideline Dashboard" style="max-width: 80%; height: auto; border-radius: 12px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+  </div>
+  <div style="flex: 1;">
+    <h3 style="color: #ffffff; margin-bottom: 20px; font-size: 24px;">View All Games from Our Dashboard</h3>
+    <p style="color: #a0a0a0; font-size: 16px; line-height: 1.6; margin-bottom: 16px;">
+      Our main dashboard gives you complete control over your sports viewing experience with powerful filtering and search capabilities.
+    </p>
+    <ul style="color: #a0a0a0; font-size: 14px; line-height: 1.8; margin-left: -10px;">
+      <li>🔍 <strong>Sort games by status</strong> - Filter by Live, Completed, Upcoming, or Tailed games</li>
+      <li>🔎 <strong>Search for your favorite teams</strong> - Find teams by name or abbreviation instantly</li>
+      <li>📋 <strong>View all your currently being tailed games</strong> - See all games you're following in one place</li>
+      <li>⚡ <strong>Real-time updates</strong> - Scores and statuses refresh automatically</li>
+      <li>📊 <strong>Individual Game Stats</strong> - Click "Game Stats" to view live coverage from the game of your choosing</li>
+      <li>🎯 <strong>One-click tailing</strong> - Start following any game with a single click</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+
 ## 🏆 Supported Sports Leagues
 
-<div align="center">
-
-| Sport | League | Status | Coverage |
-|-------|--------|--------|----------|
-| 🏈 **NFL** | National Football League | ✅ Live | Full season |
-| 🏀 **NBA** | National Basketball Association | ✅ Live | Full season |
-| ⚽ **Premier League** | English Premier League | ✅ Live | Full season |
-| 🏒 **NHL** | National Hockey League | ✅ Live | Full season |
-| ⚾ **MLB** | Major League Baseball | ✅ Live | Full season |
-
-</div>
+| Sport | Status | Coverage |
+|-------|--------|----------|
+| <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nfl.png" alt="NFL" style="height: 24px; vertical-align: middle; margin-right: 8px;"> **NFL** | ✅ Live | Full season |
+| <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nba.png" alt="NBA" style="height: 24px; vertical-align: middle; margin-right: 8px;"> **NBA** | ✅ Live | Full season |
+| <img src="https://cdn.brandfetch.io/id3ei9Uwhu/w/177/h/224/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&t=1737356858593" alt="Premier League" style="height: 24px; vertical-align: middle; margin-right: 8px;"> **Premier League** | ✅ Live | Full season |
+| <img src="https://a.espncdn.com/i/teamlogos/leagues/500/nhl.png" alt="NHL" style="height: 24px; vertical-align: middle; margin-right: 8px;"> **NHL** | ✅ Live | Full season |
+| <img src="https://a.espncdn.com/i/teamlogos/leagues/500/mlb.png" alt="MLB" style="height: 24px; vertical-align: middle; margin-right: 8px;"> **MLB** | ✅ Live | Full season |
 
 ---
 
@@ -310,4 +337,16 @@ This project is licensed under the **MIT License**.
   - **v0.0.1**: Added proper team color mappings for all Premier League teams
   
   <p><em>Happy coding and may your teams always win! 🚀</em></p>
+  
+  <br>
+  
+  <h3>🐛 Found a Bug? 💡 Have an Idea?</h3>
+  <p><strong>Help make Sideline better! Report issues, suggest features, or share your feedback.</strong></p>
+  
+  <a href="https://github.com/yourusername/sideline/issues/new" target="_blank">
+    <img src="https://img.shields.io/badge/Report%20Issue-Open%20Issue-red?style=for-the-badge&logo=github" alt="Report Issue">
+  </a>
+  <a href="https://github.com/yourusername/sideline/issues/new?template=feature_request.md" target="_blank">
+    <img src="https://img.shields.io/badge/Suggest%20Feature-Request%20Feature-blue?style=for-the-badge&logo=lightbulb" alt="Suggest Feature">
+  </a>
 </div>
