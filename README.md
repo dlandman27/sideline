@@ -23,7 +23,7 @@
   <img src="https://img.shields.io/badge/Real%20Time-Notifications-orange?style=for-the-badge&logo=bell" alt="Real Time">
 </div>
 
-## What is Sideline?
+## <img src="src/sideline_logomark.png" alt="Sideline" height="24"> What is Sideline?
 
 Sideline transforms VS Code into your personal sports command center. Whether you're debugging code or debugging your fantasy team, Sideline keeps you connected to the games that matter most.
 
@@ -84,16 +84,12 @@ Click "Game Stats" on any game to get comprehensive ESPN coverage with detailed 
 ## Quick Start Guide
 
 ### 1. Install Sideline
-```bash
-# Via VS Code Extensions
-Ctrl+Shift+X → Search "Sideline" → Install
-
-# Or install from VSIX
-code --install-extension sideline-0.0.5.vsix
-```
+- Open VS Code Extensions (`Ctrl+Shift+X`)
+- Search for **"Sideline"**
+- Click **Install**
 
 ### 2. Open Your Sports Dashboard
-- Click the **soccer ball icon** in the Activity Bar
+- Click the **Sideline icon** in the Activity Bar
 - Or use **Command Palette** (`Ctrl+Shift+P`) → "View Games"
 
 ### 3. Start Tailing Games
@@ -196,27 +192,6 @@ sideline/
 
 ---
 
-## Roadmap
-
-### Version 1.1 (Coming Soon)
-- [ ] **Team Favorites** - Save your favorite teams
-- [ ] **Custom Notifications** - Sound alerts for score changes
-- [ ] **Game Predictions** - Odds and predictions
-- [ ] **Player Stats** - Individual player performance
-
-### Version 1.2 (Future)
-- [ ] **Standings Tables** - League standings and rankings
-- [ ] **More Sports** - NCAA, MLS, and international leagues
-- [ ] **Custom Themes** - Dark/light mode customization
-- [ ] **Export Data** - Export game data and stats
-
-### Version 2.0 (Dream Features)
-- [ ] **Fantasy Integration** - Connect with fantasy platforms
-- [ ] **Social Features** - Share games with team members
-- [ ] **Advanced Analytics** - Game predictions and trends
-- [ ] **Mobile Companion** - Sync with mobile app
-
----
 
 ## Contributing
 
@@ -247,12 +222,6 @@ git push origin feature/amazing-feature
 
 ---
 
-## License
-
-This project is licensed under the **MIT License**.
-
----
-
 ## Acknowledgments
 
 - **ESPN** for providing the sports data APIs
@@ -269,19 +238,6 @@ This project is licensed under the **MIT License**.
   <img src="https://img.shields.io/badge/Download-Now-brightgreen?style=for-the-badge&logo=download" alt="Download Now">
   
   <br><br>
-  
-  ## Known Issues
-  
-  | Issue | Status | Description |
-  |-------|--------|-------------|
-  | Premier League Logos | ✅ Fixed | Some team logos weren't displaying due to abbreviation mismatches |
-  | VSIX Packaging | ✅ Fixed | Webview wasn't loading in packaged extension |
-  | Team Colors | ✅ Fixed | Manchester United and City colors not showing |
-  
-  ### Recent Fixes
-  - **v0.0.1**: Fixed Premier League team abbreviation mappings (MAN, MNC, BUR)
-  - **v0.0.1**: Fixed VSIX packaging to include webview.html file
-  - **v0.0.1**: Added proper team color mappings for all Premier League teams
   
   <p><em>Happy coding and may your teams always win! 🚀</em></p>
   
